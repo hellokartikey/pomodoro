@@ -9,6 +9,9 @@ ApplicationWindow {
   height: 400
   width: 400
 
+  minimumHeight: 300
+  minimumWidth: 300
+
   visible: true
 
   Page {
@@ -24,6 +27,7 @@ ApplicationWindow {
 
           onClicked: { Backend.incLap() }
         }
+
         ToolButton {
           text: "Reset"
           icon.name: "view-refresh-symbolic"
@@ -34,6 +38,7 @@ ApplicationWindow {
     }
 
     Clock {
+      anchors.fill: parent
       anchors.centerIn: parent
     }
   }

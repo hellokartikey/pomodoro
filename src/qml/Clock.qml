@@ -10,26 +10,52 @@ Item {
     spacing: 10
 
     Text {
-      anchors.horizontalCenter: parent.horizontalCenter
-      text: `Lap ${Backend.lap}`
+      id: modeText
 
-      font.weight: Font.Thin
-      font.pointSize: 16
+      anchors.horizontalCenter: parent.horizontalCenter
+
+      text: Backend.mode == Backend.Work ? "Work" : "Break"
+      font.pointSize: 24
+      font.weight: Font.Light
     }
 
     ProgressBar {
+      id: progress
+
       anchors.horizontalCenter: parent.horizontalCenter
+
       value: 0.5
     }
 
-    Text {
-      anchors.horizontalCenter: parent.horizontalCenter
-      text: "15 : 46"
+    Item {
+      width: progress.width
+      height: Math.max(lapText.height, timerText.height)
 
-      font.bold: true
-      font.pointSize: 20
+      Text {
+        id: lapText
 
-      horizontalAlignment: Text.AlignHCenter
+        anchors.left: parent.left
+        anchors.verticalCenter: parent.verticalCenter
+
+        text: `Lap ${Backend.lap}`
+
+        font.weight: Font.Thin
+        font.pointSize: 16
+      }
+
+      Text {
+        id: timerText
+
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+
+        text: "15 : 46"
+
+        font.bold: true
+        font.pointSize: 20
+
+        horizontalAlignment: Text.AlignHCenter
+      }
     }
   }
 }

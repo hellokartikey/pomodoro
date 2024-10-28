@@ -4,12 +4,24 @@
 #include <QJSEngine>
 #include <QObject>
 #include <QQmlEngine>
+#include <QString>
+#include <QTimer>
 
 class Backend : public QObject {
   Q_OBJECT;
   QML_ELEMENT;
   QML_SINGLETON;
 
+ public:
+  enum Mode { Work, Break };
+  Q_ENUM(Mode);
+
+  enum Status { Paused, Running };
+  Q_ENUM(Status);
+
+  static constexpr int INITIAL_LAP = 1;
+
+ private:
   // clang-format off
   Q_PROPERTY(
     int     lap
@@ -23,16 +35,18 @@ class Backend : public QObject {
     WRITE   setLabel
     NOTIFY  sigLabel
   );
+
+  Q_PROPERTY(
+    Mode    mode
+    READ    mode
+    WRITE   setMode
+    NOTIFY  sigMode
+  );
   // clang-format on
 
   Backend(QObject* parent = nullptr);
 
  public:
-  enum Mode { Work, Break };
-  Q_ENUM(Mode)
-
-  static constexpr int INITIAL_LAP = 1;
-
   static Backend* get();
   static Backend* create(QQmlEngine* qml_engine, QJSEngine* js_engine);
 
@@ -56,6 +70,8 @@ class Backend : public QObject {
   int m_lap = INITIAL_LAP;
   QString m_label;
   Mode m_mode;
+  QTimer m_work;
+  QTimer m_break;
 };
 
 #endif
