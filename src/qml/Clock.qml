@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
+import Pomodoro
+
 Item {
   id: root
 
@@ -27,35 +29,17 @@ Item {
       value: 0.5
     }
 
-    Item {
-      width: progress.width
-      height: Math.max(lapText.height, timerText.height)
+    Text {
+      id: timerText
 
-      Text {
-        id: lapText
+      anchors.horizontalCenter: parent.horizontalCenter
 
-        anchors.left: parent.left
-        anchors.verticalCenter: parent.verticalCenter
+      text: "25:00"
 
-        text: `Lap ${Backend.lap}`
+      font.bold: true
+      font.pointSize: 20
 
-        font.weight: Font.Thin
-        font.pointSize: 16
-      }
-
-      Text {
-        id: timerText
-
-        anchors.right: parent.right
-        anchors.verticalCenter: parent.verticalCenter
-
-        text: "15 : 46"
-
-        font.bold: true
-        font.pointSize: 20
-
-        horizontalAlignment: Text.AlignHCenter
-      }
+      horizontalAlignment: Text.AlignHCenter
     }
   }
 }

@@ -65,4 +65,25 @@ void Backend::setMode(Mode value) {
   Q_EMIT sigMode();
 }
 
+bool Backend::isPaused() const {
+  return m_is_paused;
+}
+
+void Backend::setPaused(bool value) {
+  if (isPaused() == value) {
+    return;
+  }
+
+  m_is_paused = value;
+  Q_EMIT sigPaused();
+}
+
+void Backend::pauseTimer() {
+  setPaused(true);
+}
+
+void Backend::startTimer() {
+  setPaused(false);
+}
+
 #include "moc_backend.cpp"

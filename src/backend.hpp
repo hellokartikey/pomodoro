@@ -7,6 +7,8 @@
 #include <QString>
 #include <QTimer>
 
+using namespace std::literals;
+
 class Backend : public QObject {
   Q_OBJECT;
   QML_ELEMENT;
@@ -20,6 +22,9 @@ class Backend : public QObject {
   Q_ENUM(Status);
 
   static constexpr int INITIAL_LAP = 1;
+
+  static constexpr auto WORK_TIME = 1min;
+  static constexpr auto BREAK_TIME = 30s;
 
  private:
   // clang-format off
@@ -41,6 +46,12 @@ class Backend : public QObject {
     READ    mode
     WRITE   setMode
     NOTIFY  sigMode
+  );
+
+  Q_PROPERTY(
+    bool    isPaused
+    READ    isPaused
+    NOTIFY  sigPaused
   );
   // clang-format on
 
@@ -66,12 +77,18 @@ class Backend : public QObject {
   void setMode(Mode value);
   Q_SIGNAL void sigMode();
 
+  [[nodiscard]] bool isPaused() const;
+  void setPaused(bool value);
+  Q_SIGNAL void sigPaused();
+
+  Q_INVOKABLE void pauseTimer();
+  Q_INVOKABLE void startTimer();
+
  private:
   int m_lap = INITIAL_LAP;
-  QString m_label;
-  Mode m_mode;
-  QTimer m_work;
-  QTimer m_break;
+  QString m_label{};
+  Mode m_mode = Work;
+  bool m_is_paused = true;
 };
 
 #endif

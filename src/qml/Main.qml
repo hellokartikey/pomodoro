@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 
 import Pomodoro
 
@@ -14,18 +15,29 @@ ApplicationWindow {
 
   visible: true
 
+  title: "Pomodoro"
+
   Page {
     id: mainPage
 
     anchors.fill: parent
 
     header: ToolBar {
-      Row {
-        ToolButton {
-          text: "Start"
-          icon.name: "media-playback-start-symbolic"
+      RowLayout {
+        anchors.fill: parent
 
-          onClicked: { Backend.incLap() }
+        Label {
+          id: label
+
+          text: `Lap ${Backend.lap}`
+
+          font.pointSize: 12
+        }
+
+        Item {
+          Layout.fillWidth: true
+
+          height: 10
         }
 
         ToolButton {
@@ -34,12 +46,35 @@ ApplicationWindow {
 
           onClicked: { Backend.reset() }
         }
+
+        ToolButton {
+          id: startButton
+
+          text: "Start"
+          icon.name: "media-playback-start-symbolic"
+
+          visible: Backend.isPaused
+
+          onClicked: { Backend.startTimer() }
+        }
+
+        ToolButton {
+          id: pauseButton
+
+          text: "Pause"
+          icon.name: "media-playback-pause-symbolic"
+
+          visible: ! Backend.isPaused
+
+          onClicked: { Backend.pauseTimer() }
+        }
       }
     }
 
     Clock {
+      id: clockPage
+
       anchors.fill: parent
-      anchors.centerIn: parent
     }
   }
 }
