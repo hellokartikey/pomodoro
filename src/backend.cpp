@@ -9,6 +9,9 @@ Backend* Backend::get() {
 }
 
 Backend* Backend::create(QQmlEngine* qml_engine, QJSEngine* js_engine) {
+  std::ignore = qml_engine;
+  std::ignore = js_engine;
+
   auto* ptr = Backend::get();
   QJSEngine::setObjectOwnership(ptr, QJSEngine::CppOwnership);
 
