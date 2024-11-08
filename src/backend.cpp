@@ -78,11 +78,11 @@ void Backend::setPaused(bool value) {
   Q_EMIT sigPaused();
 }
 
-void Backend::pauseTimer() {
+void Backend::pause() {
   setPaused(true);
 }
 
-void Backend::startTimer() {
+void Backend::start() {
   setPaused(false);
 }
 

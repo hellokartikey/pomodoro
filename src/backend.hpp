@@ -81,8 +81,8 @@ class Backend : public QObject {
   void setPaused(bool value);
   Q_SIGNAL void sigPaused();
 
-  Q_INVOKABLE void pauseTimer();
-  Q_INVOKABLE void startTimer();
+  Q_INVOKABLE void pause();
+  Q_INVOKABLE void start();
 
  private:
   int m_lap = INITIAL_LAP;

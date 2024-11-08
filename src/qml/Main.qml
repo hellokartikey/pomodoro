@@ -22,54 +22,7 @@ ApplicationWindow {
 
     anchors.fill: parent
 
-    header: ToolBar {
-      RowLayout {
-        anchors.fill: parent
-
-        Label {
-          id: label
-
-          text: `Lap ${Backend.lap}`
-
-          font.pointSize: 12
-        }
-
-        Item {
-          Layout.fillWidth: true
-
-          height: 10
-        }
-
-        ToolButton {
-          text: "Reset"
-          icon.name: "view-refresh-symbolic"
-
-          onClicked: { Backend.reset() }
-        }
-
-        ToolButton {
-          id: startButton
-
-          text: "Start"
-          icon.name: "media-playback-start-symbolic"
-
-          visible: Backend.isPaused
-
-          onClicked: { Backend.startTimer() }
-        }
-
-        ToolButton {
-          id: pauseButton
-
-          text: "Pause"
-          icon.name: "media-playback-pause-symbolic"
-
-          visible: ! Backend.isPaused
-
-          onClicked: { Backend.pauseTimer() }
-        }
-      }
-    }
+    header: Header {}
 
     Clock {
       id: clockPage
