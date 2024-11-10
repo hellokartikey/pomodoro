@@ -1,5 +1,7 @@
 #include "backend.hpp"
 
+#include <QFontDatabase>
+
 #include <libassert/assert.hpp>
 #include <print>
 
@@ -169,6 +171,17 @@ float Backend::progressBar() const {
   auto numerator = as<float>(time().count());
 
   return numerator / denominator;
+}
+
+const QFont& Backend::monoFont() {
+  static auto mono = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+
+  constexpr auto FONT_SIZE = 20;
+
+  mono.setBold(true);
+  mono.setPointSize(FONT_SIZE);
+
+  return mono;
 }
 
 #include "moc_backend.cpp"

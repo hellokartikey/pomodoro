@@ -36,8 +36,7 @@ Item {
 
       text: `${Backend.min}:${Backend.sec}`
 
-      font.bold: true
-      font.pointSize: 20
+      font: Backend.monoFont
 
       horizontalAlignment: Text.AlignHCenter
     }

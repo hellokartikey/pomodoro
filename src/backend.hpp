@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QQmlEngine>
 #include <QString>
+#include <QFont>
 #include <QTimer>
 #include <cstdint>
 
@@ -71,6 +72,11 @@ class Backend : public QObject {
     NOTIFY  sigSec
   );
 
+  Q_PROPERTY(
+    const QFont&  monoFont
+    READ          monoFont
+    CONSTANT
+  );
   // clang-format on
 
   Backend(QObject* parent = nullptr);
@@ -119,6 +125,8 @@ class Backend : public QObject {
   Q_SIGNAL void sigSec();
 
   [[nodiscard]] float progressBar() const;
+
+  [[nodiscard]] static const QFont& monoFont();
 
  private:
   int m_lap = INITIAL_LAP;
