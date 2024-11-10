@@ -7,7 +7,6 @@
 #include <QString>
 #include <QTimer>
 #include <cstdint>
-#include <print>
 
 using namespace std::literals;
 
@@ -29,6 +28,7 @@ class Backend : public QObject {
 
   static constexpr auto MINUTE = 60;
 
+  static constexpr auto TIMER_INTERVAL = 1s;
   static constexpr auto WORK_TIME = 2min;
   static constexpr auto BREAK_TIME = 30s;
 

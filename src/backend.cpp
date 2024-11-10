@@ -1,11 +1,12 @@
 #include "backend.hpp"
 
 #include <libassert/assert.hpp>
+#include <print>
 
 Backend::Backend(QObject* parent)
     : QObject(parent) {
   QObject::connect(&timer(), &QTimer::timeout, this, &Backend::tick);
-  timer().start(1s);
+  timer().start(TIMER_INTERVAL);
 }
 
 Backend* Backend::get() {
