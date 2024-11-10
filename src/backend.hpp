@@ -6,8 +6,12 @@
 #include <QQmlEngine>
 #include <QString>
 #include <QTimer>
+#include <cstdint>
+#include <print>
 
 using namespace std::literals;
+
+namespace chrono = std::chrono;
 
 class Backend : public QObject {
   Q_OBJECT;
@@ -15,15 +19,17 @@ class Backend : public QObject {
   QML_SINGLETON;
 
  public:
-  enum Mode { Work, Break };
+  enum Mode : uint8_t { Work, Break };
   Q_ENUM(Mode);
 
-  enum Status { Paused, Running };
+  enum Status : uint8_t { Paused, Running };
   Q_ENUM(Status);
 
-  static constexpr int INITIAL_LAP = 1;
+  static constexpr auto INITIAL_LAP = 1;
 
-  static constexpr auto WORK_TIME = 1min;
+  static constexpr auto MINUTE = 60;
+
+  static constexpr auto WORK_TIME = 2min;
   static constexpr auto BREAK_TIME = 30s;
 
  private:
@@ -32,13 +38,6 @@ class Backend : public QObject {
     int     lap
     READ    lap
     NOTIFY  sigLap
-  );
-
-  Q_PROPERTY(
-    QString label
-    READ    label
-    WRITE   setLabel
-    NOTIFY  sigLabel
   );
 
   Q_PROPERTY(
@@ -52,6 +51,18 @@ class Backend : public QObject {
     bool    isPaused
     READ    isPaused
     NOTIFY  sigPaused
+  );
+
+  Q_PROPERTY(
+    QString min
+    READ    min
+    NOTIFY  sigMin
+  );
+
+  Q_PROPERTY(
+    QString sec
+    READ    sec
+    NOTIFY  sigSec
   );
   // clang-format on
 
@@ -67,15 +78,13 @@ class Backend : public QObject {
   void setLap(int value);
   Q_SIGNAL void sigLap();
 
-  Q_INVOKABLE void incLap();
-
-  [[nodiscard]] const QString& label() const;
-  void setLabel(const QString& value);
-  Q_SIGNAL void sigLabel();
+  void incLap();
 
   [[nodiscard]] Mode mode() const;
   void setMode(Mode value);
   Q_SIGNAL void sigMode();
+
+  void switchMode();
 
   [[nodiscard]] bool isPaused() const;
   void setPaused(bool value);
@@ -84,11 +93,27 @@ class Backend : public QObject {
   Q_INVOKABLE void pause();
   Q_INVOKABLE void start();
 
+  QTimer& timer();
+
+  chrono::seconds& time();
+  void setTime(const chrono::seconds& value);
+
+  void tick();
+
+  QString min();
+  Q_SIGNAL void sigMin();
+
+  QString sec();
+  Q_SIGNAL void sigSec();
+
  private:
   int m_lap = INITIAL_LAP;
-  QString m_label{};
+
   Mode m_mode = Work;
   bool m_is_paused = true;
+
+  QTimer m_timer;
+  chrono::seconds m_remaining = WORK_TIME;
 };
 
 #endif

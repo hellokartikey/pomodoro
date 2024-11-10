@@ -1,7 +1,12 @@
 #include "backend.hpp"
 
+#include <libassert/assert.hpp>
+
 Backend::Backend(QObject* parent)
-    : QObject(parent) {}
+    : QObject(parent) {
+  QObject::connect(&timer(), &QTimer::timeout, this, &Backend::tick);
+  timer().start(1s);
+}
 
 Backend* Backend::get() {
   static auto item = Backend{nullptr};
@@ -21,6 +26,21 @@ Backend* Backend::create(QQmlEngine* qml_engine, QJSEngine* js_engine) {
 void Backend::reset() {
   setLap(INITIAL_LAP);
   setMode(Work);
+  pause();
+}
+
+void Backend::switchMode() {
+  switch (mode()) {
+    case Work:
+      setMode(Break);
+      break;
+    case Break:
+      setMode(Work);
+      incLap();
+      break;
+    default:
+      UNREACHABLE("Invalid mode is set");
+  }
 }
 
 int Backend::lap() const {
@@ -39,30 +59,26 @@ void Backend::incLap() {
   setLap(lap() + 1);
 }
 
-const QString& Backend::label() const {
-  return m_label;
-}
-
-void Backend::setLabel(const QString& value) {
-  if (label() == value) {
-    return;
-  }
-
-  m_label = value;
-  Q_EMIT sigLabel();
-}
-
 Backend::Mode Backend::mode() const {
   return m_mode;
 }
 
 void Backend::setMode(Mode value) {
-  if (mode() == value) {
-    return;
+  if (mode() != value) {
+    m_mode = value;
+    Q_EMIT sigMode();
   }
 
-  m_mode = value;
-  Q_EMIT sigMode();
+  switch (mode()) {
+    case Work:
+      setTime(WORK_TIME);
+      break;
+    case Break:
+      setTime(BREAK_TIME);
+      break;
+    default:
+      UNREACHABLE("Incorrect mode is set");
+  }
 }
 
 bool Backend::isPaused() const {
@@ -84,6 +100,50 @@ void Backend::pause() {
 
 void Backend::start() {
   setPaused(false);
+}
+
+QTimer& Backend::timer() {
+  return m_timer;
+}
+
+chrono::seconds& Backend::time() {
+  return m_remaining;
+}
+
+void Backend::setTime(const chrono::seconds& value) {
+  if (time() == value) {
+    return;
+  }
+
+  time() = value;
+  Q_EMIT sigMin();
+  Q_EMIT sigSec();
+}
+
+void Backend::tick() {
+  if (isPaused()) {
+    return;
+  }
+
+  if (time() <= 0s) {
+    switchMode();
+  }
+
+  time()--;
+  Q_EMIT sigSec();
+
+  if (time() % MINUTE == 0s) {
+    Q_EMIT sigMin();
+  }
+}
+
+QString Backend::min() {
+  return QString::fromStdString(
+      std::format("{:02}", duration_cast<chrono::minutes>(time()).count()));
+}
+
+QString Backend::sec() {
+  return QString::fromStdString(std::format("{:02}", time().count() % MINUTE));
 }
 
 #include "moc_backend.cpp"

@@ -34,7 +34,7 @@ Item {
 
       anchors.horizontalCenter: parent.horizontalCenter
 
-      text: "25:00"
+      text: `${Backend.min}:${Backend.sec}`
 
       font.bold: true
       font.pointSize: 20
