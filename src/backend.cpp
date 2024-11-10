@@ -3,6 +3,8 @@
 #include <libassert/assert.hpp>
 #include <print>
 
+#include "common.hpp"
+
 Backend::Backend(QObject* parent)
     : QObject(parent) {
   QObject::connect(&timer(), &QTimer::timeout, this, &Backend::tick);
@@ -115,12 +117,22 @@ const chrono::seconds& Backend::time() const {
   return m_remaining;
 }
 
+chrono::seconds& Backend::target() {
+  return m_target;
+}
+
+const chrono::seconds& Backend::target() const {
+  return m_target;
+}
+
 void Backend::setTime(const chrono::seconds& value) {
   if (time() == value) {
     return;
   }
 
   time() = value;
+  target() = value;
+
   Q_EMIT sigMin();
   Q_EMIT sigSec();
 }
@@ -149,6 +161,14 @@ QString Backend::min() const {
 
 QString Backend::sec() const {
   return QString::fromStdString(std::format("{:02}", time().count() % MINUTE));
+}
+
+float Backend::progressBar() const {
+  auto denominator =
+      ASSERT_VAL(as<float>(target().count()), "Target is somehow 0s");
+  auto numerator = as<float>(time().count());
+
+  return numerator / denominator;
 }
 
 #include "moc_backend.cpp"

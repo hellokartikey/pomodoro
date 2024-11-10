@@ -64,6 +64,13 @@ class Backend : public QObject {
     READ    sec
     NOTIFY  sigSec
   );
+
+  Q_PROPERTY(
+    float   progressBar
+    READ    progressBar
+    NOTIFY  sigSec
+  );
+
   // clang-format on
 
   Backend(QObject* parent = nullptr);
@@ -98,6 +105,9 @@ class Backend : public QObject {
   chrono::seconds& time();
   [[nodiscard]] const chrono::seconds& time() const;
 
+  chrono::seconds& target();
+  [[nodiscard]] const chrono::seconds& target() const;
+
   void setTime(const chrono::seconds& value);
 
   void tick();
@@ -108,6 +118,8 @@ class Backend : public QObject {
   [[nodiscard]] QString sec() const;
   Q_SIGNAL void sigSec();
 
+  [[nodiscard]] float progressBar() const;
+
  private:
   int m_lap = INITIAL_LAP;
 
@@ -116,6 +128,7 @@ class Backend : public QObject {
 
   QTimer m_timer;
   chrono::seconds m_remaining = WORK_TIME;
+  chrono::seconds m_target = WORK_TIME;
 };
 
 #endif

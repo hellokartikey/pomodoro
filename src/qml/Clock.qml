@@ -26,7 +26,7 @@ Item {
 
       anchors.horizontalCenter: parent.horizontalCenter
 
-      value: 0.5
+      value: Backend.progressBar
     }
 
     Text {
