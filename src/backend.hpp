@@ -96,14 +96,16 @@ class Backend : public QObject {
   QTimer& timer();
 
   chrono::seconds& time();
+  [[nodiscard]] const chrono::seconds& time() const;
+
   void setTime(const chrono::seconds& value);
 
   void tick();
 
-  QString min();
+  [[nodiscard]] QString min() const;
   Q_SIGNAL void sigMin();
 
-  QString sec();
+  [[nodiscard]] QString sec() const;
   Q_SIGNAL void sigSec();
 
  private:

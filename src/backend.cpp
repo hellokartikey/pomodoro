@@ -111,6 +111,10 @@ chrono::seconds& Backend::time() {
   return m_remaining;
 }
 
+const chrono::seconds& Backend::time() const {
+  return m_remaining;
+}
+
 void Backend::setTime(const chrono::seconds& value) {
   if (time() == value) {
     return;
@@ -138,12 +142,12 @@ void Backend::tick() {
   }
 }
 
-QString Backend::min() {
+QString Backend::min() const {
   return QString::fromStdString(
       std::format("{:02}", duration_cast<chrono::minutes>(time()).count()));
 }
 
-QString Backend::sec() {
+QString Backend::sec() const {
   return QString::fromStdString(std::format("{:02}", time().count() % MINUTE));
 }
 
