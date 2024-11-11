@@ -1,7 +1,6 @@
 #include "backend.hpp"
 
 #include <QFontDatabase>
-
 #include <libassert/assert.hpp>
 #include <print>
 
@@ -75,10 +74,10 @@ void Backend::setMode(Mode value) {
 
   switch (mode()) {
     case Work:
-      setTime(WORK_TIME);
+      setTime(workTime());
       break;
     case Break:
-      setTime(BREAK_TIME);
+      setTime(breakTime());
       break;
     default:
       UNREACHABLE("Incorrect mode is set");
@@ -177,6 +176,28 @@ const QFont& Backend::monoFont() {
   mono.setPointSize(FONT_SIZE);
 
   return mono;
+}
+
+const chrono::seconds& Backend::workTime() const {
+  return m_work_time;
+}
+
+void Backend::setWorkTime(const chrono::seconds& value) {
+  if (workTime() != value) {
+    m_work_time = value;
+    Q_EMIT sigWorkTime();
+  }
+}
+
+const chrono::seconds& Backend::breakTime() const {
+  return m_break_time;
+}
+
+void Backend::setBreakTime(const chrono::seconds& value) {
+  if (breakTime() != value) {
+    m_break_time = value;
+    Q_EMIT sigBreakTime();
+  }
 }
 
 #include "moc_backend.cpp"

@@ -1,11 +1,11 @@
 #ifndef HK_POMODORO_BACKEND_HPP
 #define HK_POMODORO_BACKEND_HPP
 
+#include <QFont>
 #include <QJSEngine>
 #include <QObject>
 #include <QQmlEngine>
 #include <QString>
-#include <QFont>
 #include <QTimer>
 #include <cstdint>
 
@@ -30,8 +30,8 @@ class Backend : public QObject {
   static constexpr auto MINUTE = 60;
 
   static constexpr auto TIMER_INTERVAL = 1s;
-  static constexpr auto WORK_TIME = 20min;
-  static constexpr auto BREAK_TIME = 10min;
+  static constexpr auto DEFAULT_WORK_TIME = 10s;
+  static constexpr auto DEFAULT_BREAK_TIME = 5s;
 
  private:
   // clang-format off
@@ -128,6 +128,14 @@ class Backend : public QObject {
 
   [[nodiscard]] static const QFont& monoFont();
 
+  [[nodiscard]] const chrono::seconds& workTime() const;
+  void setWorkTime(const chrono::seconds& value);
+  Q_SIGNAL void sigWorkTime();
+
+  [[nodiscard]] const chrono::seconds& breakTime() const;
+  void setBreakTime(const chrono::seconds& value);
+  Q_SIGNAL void sigBreakTime();
+
  private:
   int m_lap = INITIAL_LAP;
 
@@ -135,8 +143,11 @@ class Backend : public QObject {
   bool m_is_paused = true;
 
   QTimer m_timer;
-  chrono::seconds m_remaining = WORK_TIME;
-  chrono::seconds m_target = WORK_TIME;
+  chrono::seconds m_remaining = DEFAULT_WORK_TIME;
+  chrono::seconds m_target = DEFAULT_WORK_TIME;
+
+  chrono::seconds m_work_time = DEFAULT_WORK_TIME;
+  chrono::seconds m_break_time = DEFAULT_BREAK_TIME;
 };
 
 #endif
