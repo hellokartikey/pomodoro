@@ -53,11 +53,10 @@ int Backend::lap() const {
 }
 
 void Backend::setLap(int value) {
-  if (lap() == value) {
-    return;
+  if (lap() != value) {
+    m_lap = value;
+    Q_EMIT sigLap();
   }
-  m_lap = value;
-  Q_EMIT sigLap();
 }
 
 void Backend::incLap() {
@@ -91,12 +90,10 @@ bool Backend::isPaused() const {
 }
 
 void Backend::setPaused(bool value) {
-  if (isPaused() == value) {
-    return;
+  if (isPaused() != value) {
+    m_is_paused = value;
+    Q_EMIT sigPaused();
   }
-
-  m_is_paused = value;
-  Q_EMIT sigPaused();
 }
 
 void Backend::pause() {
@@ -128,15 +125,13 @@ const chrono::seconds& Backend::target() const {
 }
 
 void Backend::setTime(const chrono::seconds& value) {
-  if (time() == value) {
-    return;
+  if (time() != value) {
+    time() = value;
+    target() = value;
+
+    Q_EMIT sigMin();
+    Q_EMIT sigSec();
   }
-
-  time() = value;
-  target() = value;
-
-  Q_EMIT sigMin();
-  Q_EMIT sigSec();
 }
 
 void Backend::tick() {
