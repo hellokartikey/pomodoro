@@ -54,5 +54,13 @@ ToolBar {
 
       onClicked: { Backend.reset() }
     }
+
+    ToolButton {
+      text: "Settings"
+      icon.name: "settings-configure-symbolic"
+      display: AbstractButton.IconOnly
+
+      onClicked: { pageStack.push(settingsPage) }
+    }
   }
 }

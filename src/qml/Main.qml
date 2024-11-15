@@ -31,10 +31,9 @@ ApplicationWindow {
     Clock {}
   }
 
-    Clock {
-      id: clockPage
+  Component {
+    id: settingsPage
 
-      anchors.fill: parent
-    }
+    Settings {}
   }
 }
