@@ -17,12 +17,19 @@ ApplicationWindow {
 
   title: "Pomodoro"
 
-  Page {
-    id: mainPage
+  StackView {
+    id: pageStack
 
     anchors.fill: parent
 
-    header: Header {}
+    initialItem: mainPage
+  }
+
+  Component {
+    id: mainPage
+
+    Clock {}
+  }
 
     Clock {
       id: clockPage

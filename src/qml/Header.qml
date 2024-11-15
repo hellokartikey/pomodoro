@@ -3,6 +3,9 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 ToolBar {
+  leftPadding: 10
+  rightPadding: 10
+
   RowLayout {
     anchors.fill: parent
 
@@ -25,6 +28,7 @@ ToolBar {
 
       text: "Start"
       icon.name: "media-playback-start-symbolic"
+      display: AbstractButton.IconOnly
 
       visible: Backend.isPaused
 
@@ -36,6 +40,7 @@ ToolBar {
 
       text: "Pause"
       icon.name: "media-playback-pause-symbolic"
+      display: AbstractButton.IconOnly
 
       visible: ! Backend.isPaused
 
@@ -45,6 +50,7 @@ ToolBar {
     ToolButton {
       text: "Reset"
       icon.name: "view-refresh-symbolic"
+      display: AbstractButton.IconOnly
 
       onClicked: { Backend.reset() }
     }

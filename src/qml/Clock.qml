@@ -3,42 +3,50 @@ import QtQuick.Controls
 
 import Pomodoro
 
-Item {
+Page {
   id: root
 
-  Column {
-    anchors.centerIn: parent
+  header: Header {}
 
-    spacing: 10
+  Item {
+    id: clockclockItem
 
-    Text {
-      id: modeText
+    anchors.fill: parent
 
-      anchors.horizontalCenter: parent.horizontalCenter
+    Column {
+      anchors.centerIn: parent
 
-      text: Backend.mode == Backend.Work ? "Work" : "Break"
-      font.pointSize: 24
-      font.weight: Font.Light
-    }
+      spacing: 10
 
-    ProgressBar {
-      id: progress
+      Text {
+        id: modeText
 
-      anchors.horizontalCenter: parent.horizontalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
 
-      value: Backend.progressBar
-    }
+        text: Backend.mode == Backend.Work ? "Work" : "Break"
+        font.pointSize: 24
+        font.weight: Font.Light
+      }
 
-    Text {
-      id: timerText
+      ProgressBar {
+        id: progress
 
-      anchors.horizontalCenter: parent.horizontalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
 
-      text: `${Backend.min}:${Backend.sec}`
+        value: Backend.progressBar
+      }
 
-      font: Backend.monoFont
+      Text {
+        id: timerText
 
-      horizontalAlignment: Text.AlignHCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        text: `${Backend.min}:${Backend.sec}`
+
+        font: Backend.monoFont
+
+        horizontalAlignment: Text.AlignHCenter
+      }
     }
   }
 }
