@@ -1,6 +1,7 @@
 #include "backend.hpp"
 
 #include <QFontDatabase>
+#include <chrono>
 #include <libassert/assert.hpp>
 #include <print>
 
@@ -189,6 +190,19 @@ void Backend::setWorkTime(const chrono::seconds& value) {
   }
 }
 
+void Backend::setWorkTime(int min, int sec) {
+  auto time = duration_cast<chrono::seconds>(chrono::minutes{min}) + chrono::seconds{sec};
+  setWorkTime(time);
+}
+
+int Backend::workMin() const {
+  return duration_cast<chrono::minutes>(workTime()).count();
+}
+
+int Backend::workSec() const {
+  return workTime().count() % MINUTE;
+}
+
 const chrono::seconds& Backend::breakTime() const {
   return m_break_time;
 }
@@ -198,6 +212,19 @@ void Backend::setBreakTime(const chrono::seconds& value) {
     m_break_time = value;
     Q_EMIT sigBreakTime();
   }
+}
+
+void Backend::setBreakTime(int min, int sec) {
+  auto time = duration_cast<chrono::seconds>(chrono::minutes{min}) + chrono::seconds{sec};
+  setBreakTime(time);
+}
+
+int Backend::breakMin() const {
+  return duration_cast<chrono::minutes>(breakTime()).count();
+}
+
+int Backend::breakSec() const {
+  return breakTime().count() % MINUTE;
 }
 
 #include "moc_backend.cpp"

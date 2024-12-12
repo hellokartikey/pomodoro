@@ -1,6 +1,6 @@
 # Pomodoro Timer
 
-Pomodoro is an open source pomodoro timer build with Qt/QML.
+Pomodoro is a free and open source pomodoro timer build with Qt/QML.
 
 ![Main Window](screenshots/readme.png)
 

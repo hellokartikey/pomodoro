@@ -5,6 +5,14 @@ import QtQuick.Layouts
 Page {
   id: root
 
+  function updateWork() {
+    Backend.setWorkTime(workMin.value, workSec.value);
+  }
+
+  function updateBreak() {
+    Backend.setBreakTime(breakMin.value, breakSec.value);
+  }
+
   header: ToolBar {
     id: headerBar
 
@@ -41,12 +49,75 @@ Page {
   Column {
     anchors.centerIn: parent
 
+    spacing: 10
+
     Row {
       spacing: 10
-      Label { text: "Work Time" }
+      Label {
+        id: workLabel
 
-      ComboBox {
-        model: [1, 2, 3]
+        anchors.verticalCenter: parent.verticalCenter
+
+        text: "Work Time"
+      }
+
+      SpinBox {
+        id: workMin
+
+        anchors.verticalCenter: parent.verticalCenter
+
+        from: 0
+        to: 60
+        value: Backend.workMin
+
+        onValueChanged: updateWork()
+      }
+
+      SpinBox {
+        id: workSec
+
+        anchors.verticalCenter: parent.verticalCenter
+
+        from: 0
+        to: 59
+        value: Backend.workSec
+
+        onValueChanged: updateWork()
+      }
+    }
+
+    Row {
+      spacing: 10
+      Label {
+        id: breakLabel
+
+        anchors.verticalCenter: parent.verticalCenter
+
+        text: "Break Time"
+      }
+
+      SpinBox {
+        id: breakMin
+
+        anchors.verticalCenter: parent.verticalCenter
+
+        from: 0
+        to: 60
+        value: Backend.breakMin
+
+        onValueChanged: updateBreak()
+      }
+
+      SpinBox {
+        id: breakSec
+
+        anchors.verticalCenter: parent.verticalCenter
+
+        from: 0
+        to: 59
+        value: Backend.breakSec
+
+        onValueChanged: updateBreak()
       }
     }
   }

@@ -30,8 +30,8 @@ class Backend : public QObject {
   static constexpr auto MINUTE = 60;
 
   static constexpr auto TIMER_INTERVAL = 1s;
-  static constexpr auto DEFAULT_WORK_TIME = 10s;
-  static constexpr auto DEFAULT_BREAK_TIME = 5s;
+  static constexpr auto DEFAULT_WORK_TIME = 25min;
+  static constexpr auto DEFAULT_BREAK_TIME = 5min;
 
  private:
   // clang-format off
@@ -64,6 +64,30 @@ class Backend : public QObject {
     QString sec
     READ    sec
     NOTIFY  sigSec
+  );
+
+  Q_PROPERTY(
+    int     workMin
+    READ    workMin
+    NOTIFY  sigWorkTime
+  );
+
+  Q_PROPERTY(
+    int     workSec
+    READ    workSec
+    NOTIFY  sigWorkTime
+  );
+
+  Q_PROPERTY(
+    int     breakMin
+    READ    breakMin
+    NOTIFY  sigBreakTime
+  );
+
+  Q_PROPERTY(
+    int     breakSec
+    READ    breakSec
+    NOTIFY  sigBreakTime
   );
 
   Q_PROPERTY(
@@ -130,11 +154,17 @@ class Backend : public QObject {
 
   [[nodiscard]] const chrono::seconds& workTime() const;
   void setWorkTime(const chrono::seconds& value);
+  Q_INVOKABLE void setWorkTime(int min, int sec);
   Q_SIGNAL void sigWorkTime();
+  [[nodiscard]] int workMin() const;
+  [[nodiscard]] int workSec() const;
 
   [[nodiscard]] const chrono::seconds& breakTime() const;
   void setBreakTime(const chrono::seconds& value);
+  Q_INVOKABLE void setBreakTime(int min, int sec);
   Q_SIGNAL void sigBreakTime();
+  [[nodiscard]] int breakMin() const;
+  [[nodiscard]] int breakSec() const;
 
  private:
   int m_lap = INITIAL_LAP;
