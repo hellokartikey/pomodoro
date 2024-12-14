@@ -10,6 +10,8 @@
 Backend::Backend(QObject* parent)
     : QObject(parent) {
   QObject::connect(&timer(), &QTimer::timeout, this, &Backend::tick);
+  QObject::connect(this, &Backend::sigWorkTime, this, &Backend::resetMode);
+  QObject::connect(this, &Backend::sigBreakTime, this, &Backend::resetMode);
   timer().start(TIMER_INTERVAL);
 }
 
@@ -30,8 +32,8 @@ Backend* Backend::create(QQmlEngine* qml_engine, QJSEngine* js_engine) {
 
 void Backend::reset() {
   setLap(INITIAL_LAP);
-  setMode(Work);
   pause();
+  forceMode(Work);
 }
 
 void Backend::switchMode() {
@@ -69,11 +71,12 @@ Backend::Mode Backend::mode() const {
 
 void Backend::setMode(Mode value) {
   if (mode() != value) {
-    m_mode = value;
-    Q_EMIT sigMode();
+    forceMode(value);
   }
+}
 
-  switch (mode()) {
+void Backend::forceMode(Mode value) {
+  switch (value) {
     case Work:
       setTime(workTime());
       break;
@@ -83,6 +86,13 @@ void Backend::setMode(Mode value) {
     default:
       UNREACHABLE("Incorrect mode is set");
   }
+
+  m_mode = value;
+  Q_EMIT sigMode();
+}
+
+void Backend::resetMode() {
+  forceMode(mode());
 }
 
 bool Backend::isPaused() const {

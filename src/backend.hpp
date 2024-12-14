@@ -119,6 +119,8 @@ class Backend : public QObject {
 
   [[nodiscard]] Mode mode() const;
   void setMode(Mode value);
+  void forceMode(Mode value);
+  void resetMode();
   Q_SIGNAL void sigMode();
 
   void switchMode();
