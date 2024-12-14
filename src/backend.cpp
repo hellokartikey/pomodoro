@@ -175,7 +175,7 @@ void Backend::tick() {
 
 QString Backend::min() const {
   return QString::fromStdString(
-      std::format("{:02}", duration_cast<chrono::minutes>(time()).count()));
+      std::format("{:02}", as<chrono::minutes>(time()).count()));
 }
 
 QString Backend::sec() const {
@@ -217,12 +217,12 @@ void Backend::setWorkTime(int min, int sec) {
     sec = 1;
   }
 
-  auto time = duration_cast<chrono::seconds>(chrono::minutes{min}) + chrono::seconds{sec};
+  auto time = as<chrono::seconds>(chrono::minutes{min}) + chrono::seconds{sec};
   setWorkTime(time);
 }
 
 int Backend::workMin() const {
-  return duration_cast<chrono::minutes>(workTime()).count();
+  return as<chrono::minutes>(workTime()).count();
 }
 
 int Backend::workSec() const {
@@ -245,12 +245,12 @@ void Backend::setBreakTime(int min, int sec) {
     sec = 1;
   }
 
-  auto time = duration_cast<chrono::seconds>(chrono::minutes{min}) + chrono::seconds{sec};
+  auto time = as<chrono::seconds>(chrono::minutes{min}) + chrono::seconds{sec};
   setBreakTime(time);
 }
 
 int Backend::breakMin() const {
-  return duration_cast<chrono::minutes>(breakTime()).count();
+  return as<chrono::minutes>(breakTime()).count();
 }
 
 int Backend::breakSec() const {
