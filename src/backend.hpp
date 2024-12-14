@@ -34,74 +34,27 @@ class Backend : public QObject {
   static constexpr auto DEFAULT_BREAK_TIME = 5min;
 
  private:
-  // clang-format off
-  Q_PROPERTY(
-    int     lap
-    READ    lap
-    NOTIFY  sigLap
-  );
+  Q_PROPERTY(int lap READ lap NOTIFY sigLap);
 
-  Q_PROPERTY(
-    Mode    mode
-    READ    mode
-    WRITE   setMode
-    NOTIFY  sigMode
-  );
+  Q_PROPERTY(Mode mode READ mode WRITE setMode NOTIFY sigMode);
 
-  Q_PROPERTY(
-    bool    isPaused
-    READ    isPaused
-    NOTIFY  sigPaused
-  );
+  Q_PROPERTY(bool isPaused READ isPaused NOTIFY sigPaused);
 
-  Q_PROPERTY(
-    QString min
-    READ    min
-    NOTIFY  sigMin
-  );
+  Q_PROPERTY(QString min READ min NOTIFY sigMin);
 
-  Q_PROPERTY(
-    QString sec
-    READ    sec
-    NOTIFY  sigSec
-  );
+  Q_PROPERTY(QString sec READ sec NOTIFY sigSec);
 
-  Q_PROPERTY(
-    int     workMin
-    READ    workMin
-    NOTIFY  sigWorkTime
-  );
+  Q_PROPERTY(int workMin READ workMin NOTIFY sigWorkTime);
 
-  Q_PROPERTY(
-    int     workSec
-    READ    workSec
-    NOTIFY  sigWorkTime
-  );
+  Q_PROPERTY(int workSec READ workSec NOTIFY sigWorkTime);
 
-  Q_PROPERTY(
-    int     breakMin
-    READ    breakMin
-    NOTIFY  sigBreakTime
-  );
+  Q_PROPERTY(int breakMin READ breakMin NOTIFY sigBreakTime);
 
-  Q_PROPERTY(
-    int     breakSec
-    READ    breakSec
-    NOTIFY  sigBreakTime
-  );
+  Q_PROPERTY(int breakSec READ breakSec NOTIFY sigBreakTime);
 
-  Q_PROPERTY(
-    float   progressBar
-    READ    progressBar
-    NOTIFY  sigSec
-  );
+  Q_PROPERTY(float progressBar READ progressBar NOTIFY sigSec);
 
-  Q_PROPERTY(
-    const QFont&  monoFont
-    READ          monoFont
-    CONSTANT
-  );
-  // clang-format on
+  Q_PROPERTY(const QFont& monoFont READ monoFont CONSTANT);
 
   Backend(QObject* parent = nullptr);
 
