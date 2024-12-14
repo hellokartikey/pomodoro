@@ -56,6 +56,14 @@ ToolBar {
     }
 
     ToolButton {
+      text: "Skip"
+      icon.name: "media-skip-forward-symbolic"
+      display: AbstractButton.IconOnly
+
+      onClicked: { Backend.skip() }
+    }
+
+    ToolButton {
       text: "Settings"
       icon.name: "settings-configure-symbolic"
       display: AbstractButton.IconOnly

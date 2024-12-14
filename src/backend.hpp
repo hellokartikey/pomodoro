@@ -129,6 +129,7 @@ class Backend : public QObject {
 
   Q_INVOKABLE void pause();
   Q_INVOKABLE void start();
+  Q_INVOKABLE void skip();
 
   QTimer& timer();
 

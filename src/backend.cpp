@@ -104,6 +104,10 @@ void Backend::start() {
   setPaused(false);
 }
 
+void Backend::skip() {
+  switchMode();
+}
+
 QTimer& Backend::timer() {
   return m_timer;
 }
