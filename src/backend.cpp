@@ -205,6 +205,10 @@ void Backend::setWorkTime(const chrono::seconds& value) {
 }
 
 void Backend::setWorkTime(int min, int sec) {
+  if (min == 0 and sec == 0) {
+    sec = 1;
+  }
+
   auto time = duration_cast<chrono::seconds>(chrono::minutes{min}) + chrono::seconds{sec};
   setWorkTime(time);
 }
@@ -229,6 +233,10 @@ void Backend::setBreakTime(const chrono::seconds& value) {
 }
 
 void Backend::setBreakTime(int min, int sec) {
+  if (min == 0 and sec == 0) {
+    sec = 1;
+  }
+
   auto time = duration_cast<chrono::seconds>(chrono::minutes{min}) + chrono::seconds{sec};
   setBreakTime(time);
 }
