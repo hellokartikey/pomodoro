@@ -10,8 +10,8 @@
 Backend::Backend(QObject* parent)
     : QObject(parent) {
   QObject::connect(&timer(), &QTimer::timeout, this, &Backend::tick);
-  QObject::connect(this, &Backend::sigWorkTime, this, &Backend::resetMode);
-  QObject::connect(this, &Backend::sigBreakTime, this, &Backend::resetMode);
+  QObject::connect(this, &Backend::sigWorkTime, this, &Backend::resetWork);
+  QObject::connect(this, &Backend::sigBreakTime, this, &Backend::resetBreak);
   timer().start(TIMER_INTERVAL);
 }
 
@@ -91,8 +91,16 @@ void Backend::forceMode(Mode value) {
   Q_EMIT sigMode();
 }
 
-void Backend::resetMode() {
-  forceMode(mode());
+void Backend::resetWork() {
+  if (mode() == Work) {
+    forceMode(Work);
+  }
+}
+
+void Backend::resetBreak() {
+  if (mode() == Break) {
+    forceMode(Break);
+  }
 }
 
 bool Backend::isPaused() const {
