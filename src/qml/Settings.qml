@@ -46,79 +46,66 @@ Page {
     }
   }
 
-  Column {
+  Grid {
     anchors.centerIn: parent
+
+    columns: 3
+    rows: 2
 
     spacing: 10
 
-    Row {
-      spacing: 10
-      Label {
-        id: workLabel
+    verticalItemAlignment: Grid.AlignVCenter
 
-        anchors.verticalCenter: parent.verticalCenter
+    Label {
+      id: workLabel
 
-        text: "Work Time"
-      }
-
-      SpinBox {
-        id: workMin
-
-        anchors.verticalCenter: parent.verticalCenter
-
-        from: 0
-        to: 60
-        value: Backend.workMin
-
-        onValueChanged: updateWork()
-      }
-
-      SpinBox {
-        id: workSec
-
-        anchors.verticalCenter: parent.verticalCenter
-
-        from: 0
-        to: 59
-        value: Backend.workSec
-
-        onValueChanged: updateWork()
-      }
+      text: "Work Time"
     }
 
-    Row {
-      spacing: 10
-      Label {
-        id: breakLabel
+    SpinBox {
+      id: workMin
 
-        anchors.verticalCenter: parent.verticalCenter
+      from: 0
+      to: 60
+      value: Backend.workMin
 
-        text: "Break Time"
-      }
+      onValueChanged: updateWork()
+    }
 
-      SpinBox {
-        id: breakMin
+    SpinBox {
+      id: workSec
 
-        anchors.verticalCenter: parent.verticalCenter
+      from: 0
+      to: 59
+      value: Backend.workSec
 
-        from: 0
-        to: 60
-        value: Backend.breakMin
+      onValueChanged: updateWork()
+    }
 
-        onValueChanged: updateBreak()
-      }
+    Label {
+      id: breakLabel
 
-      SpinBox {
-        id: breakSec
+      text: "Break Time"
+    }
 
-        anchors.verticalCenter: parent.verticalCenter
+    SpinBox {
+      id: breakMin
 
-        from: 0
-        to: 59
-        value: Backend.breakSec
+      from: 0
+      to: 60
+      value: Backend.breakMin
 
-        onValueChanged: updateBreak()
-      }
+      onValueChanged: updateBreak()
+    }
+
+    SpinBox {
+      id: breakSec
+
+      from: 0
+      to: 59
+      value: Backend.breakSec
+
+      onValueChanged: updateBreak()
     }
   }
 }
