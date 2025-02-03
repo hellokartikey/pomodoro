@@ -6,4 +6,3 @@ QML_FILES
   Header.qml
   Settings.qml
 )
-

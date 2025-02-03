@@ -25,4 +25,4 @@ PRIVATE
   libassert::assert
 )
 
-install(TARGETS ${PROJECT_NAME})
+install(TARGETS ${PROJECT_NAME} DESTINATION ${KDE_INSTALL_BINDIR})

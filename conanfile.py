@@ -11,10 +11,9 @@ class Pomodoro(ConanFile):
         self.requires("extra-cmake-modules/6.2.0")
 
     def layout(self):
-        cmake_layout(self, build_folder="build")
+        cmake_layout(self)
 
     def build(self):
         cmake = CMake(self)
         cmake.configure()
         cmake.build()
-

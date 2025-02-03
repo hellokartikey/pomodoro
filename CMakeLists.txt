@@ -9,9 +9,8 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-include(GNUInstallDirs)
-
-find_package(Qt6 REQUIRED
+find_package(Qt6
+REQUIRED
 COMPONENTS
   Core
   Gui
@@ -22,8 +21,12 @@ COMPONENTS
 find_package(fmt REQUIRED)
 find_package(libassert REQUIRED)
 
-qt_standard_project_setup()
+find_package(ECM REQUIRED NO_MODULE)
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
+include(KDEInstallDirs6)
+
+qt_standard_project_setup()
 qt_policy(SET QTP0001 NEW)
 
 add_subdirectory(src)
