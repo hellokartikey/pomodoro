@@ -1,8 +1,7 @@
 ---
 Language:        Cpp
 BasedOnStyle: Google
-
 PackConstructorInitializers: Never
-BreakConstructorInitializers: BeforeComma
+IncludeBlocks: Preserve
 AllowShortFunctionsOnASingleLine: Empty
 ...

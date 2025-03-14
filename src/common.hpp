@@ -7,7 +7,7 @@
 
 template <typename T>
 concept is_time = requires(T value) {
- { std::chrono::duration{value} } -> std::same_as<T>;
+  { std::chrono::duration{value} } -> std::same_as<T>;
 };
 
 // Casting functions
@@ -18,7 +18,7 @@ auto as(const From& from) {
 }
 
 template <typename To, typename FromR, typename FromP>
-requires is_time<To>
+  requires is_time<To>
 auto as(const std::chrono::duration<FromR, FromP>& from) {
   return std::chrono::duration_cast<To>(from);
 }

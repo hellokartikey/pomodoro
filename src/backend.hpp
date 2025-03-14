@@ -1,13 +1,14 @@
 #ifndef HK_POMODORO_BACKEND_HPP
 #define HK_POMODORO_BACKEND_HPP
 
+#include <cstdint>
+
 #include <QFont>
 #include <QJSEngine>
 #include <QObject>
 #include <QQmlEngine>
 #include <QString>
 #include <QTimer>
-#include <cstdint>
 
 using namespace std::literals;
 

@@ -1,9 +1,11 @@
 #include "backend.hpp"
 
-#include <QFontDatabase>
 #include <chrono>
-#include <libassert/assert.hpp>
 #include <print>
+
+#include <QFontDatabase>
+
+#include <libassert/assert.hpp>
 
 #include "common.hpp"
 
