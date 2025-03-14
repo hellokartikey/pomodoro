@@ -56,7 +56,7 @@ class Backend : public QObject {
 
   Q_PROPERTY(const QFont& monoFont READ monoFont CONSTANT);
 
-  Backend(QObject* parent = nullptr);
+  explicit Backend(QObject* parent = nullptr);
 
  public:
   static Backend* get();
