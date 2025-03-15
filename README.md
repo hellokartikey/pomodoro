@@ -10,10 +10,12 @@ Some features that I wanted to have in,
 
 1. Minimal interface
 1. Lap counter
-1. Customizable (TODO)
+1. Customizable
 1. Notifications (TODO)
 
 ## Install
+
+I am planning to release on Flathub after some touches.
 
 See Build section.
 
