@@ -12,11 +12,11 @@ Backend::Backend(QObject* parent)
       m_to_break(new KNotification("toBreak", KNotification::Persistent)),
       m_to_work(new KNotification("toWork", KNotification::Persistent)) {
   // TODO: Improve the notification texts
-  m_to_break->setTitle("Take a break...");
-  m_to_break->setText("Stretch your legs.");
+  m_to_break->setTitle("Break time");
+  m_to_break->setText("Take a short break. Stretch and unwind.");
 
-  m_to_work->setTitle("Start working...");
-  m_to_work->setText("Do your work");
+  m_to_work->setTitle("Back to work");
+  m_to_work->setText("Your break has ended. Keep the momentum going.");
 
   connect(&timer(), &QTimer::timeout, this, &Backend::tick);
   connect(this, &Backend::sigWorkTime, this, &Backend::resetWork);
