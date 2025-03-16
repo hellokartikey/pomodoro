@@ -7,11 +7,11 @@ import Pomodoro
 ApplicationWindow {
   id: root
 
-  height: 400
-  width: 400
+  height: 300
+  width: 300
 
-  minimumHeight: 300
-  minimumWidth: 300
+  minimumHeight: 250
+  minimumWidth: 250
 
   visible: true
 

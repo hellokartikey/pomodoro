@@ -3,7 +3,6 @@
 
 #include <cstdint>
 
-#include <QFont>
 #include <QJSEngine>
 #include <QObject>
 #include <QQmlEngine>
@@ -57,8 +56,6 @@ class Backend : public QObject {
 
   Q_PROPERTY(float progressBar READ progressBar NOTIFY sigSec);
 
-  Q_PROPERTY(const QFont& monoFont READ monoFont CONSTANT);
-
   explicit Backend(QObject* parent = nullptr);
 
  public:
@@ -111,8 +108,6 @@ class Backend : public QObject {
   Q_SIGNAL void sigSec();
 
   [[nodiscard]] float progressBar() const;
-
-  [[nodiscard]] static const QFont& monoFont();
 
   [[nodiscard]] const chrono::seconds& workTime() const;
   void setWorkTime(const chrono::seconds& value);

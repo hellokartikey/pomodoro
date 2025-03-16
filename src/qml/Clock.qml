@@ -44,7 +44,7 @@ Page {
 
         text: `${Backend.min}:${Backend.sec}`
 
-        font: Backend.monoFont
+        font.pointSize: 32
 
         horizontalAlignment: Text.AlignHCenter
       }

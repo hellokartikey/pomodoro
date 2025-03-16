@@ -3,8 +3,6 @@
 #include <chrono>
 #include <print>
 
-#include <QFontDatabase>
-
 #include <libassert/assert.hpp>
 
 #include "common.hpp"
@@ -58,7 +56,7 @@ void Backend::switchMode() {
       incLap();
       break;
     default:
-      UNREACHABLE("Invalid mode is set");
+      UNREACHABLE();
   }
 
   notify();
@@ -98,7 +96,7 @@ void Backend::forceMode(Mode value) {
       setTime(breakTime());
       break;
     default:
-      UNREACHABLE("Incorrect mode is set");
+      UNREACHABLE();
   }
 
   m_mode = value;
@@ -204,17 +202,6 @@ float Backend::progressBar() const {
   return numerator / denominator;
 }
 
-const QFont& Backend::monoFont() {
-  static auto mono = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-
-  constexpr auto FONT_SIZE = 20;
-
-  mono.setBold(true);
-  mono.setPointSize(FONT_SIZE);
-
-  return mono;
-}
-
 const chrono::seconds& Backend::workTime() const {
   return m_work_time;
 }
@@ -280,9 +267,10 @@ void Backend::notify() {
       m_to_work->sendEvent();
       break;
     default:
-      UNREACHABLE("This should not have happened");
+      UNREACHABLE();
   }
 
+  // TODO: Use custom sounds instead of beep
   KNotification::beep();
 }
 
