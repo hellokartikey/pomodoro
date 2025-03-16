@@ -21,8 +21,10 @@ PRIVATE
   Qt6::Quick
   Qt6::Gui
   Qt6::QuickControls2
+  KF6::Notifications
   fmt::fmt
   libassert::assert
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${KDE_INSTALL_BINDIR})
+install(FILES ${PROJECT_NAME}.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR})

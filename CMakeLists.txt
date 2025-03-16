@@ -20,6 +20,12 @@ COMPONENTS
   QuickControls2
 )
 
+find_package(KF6
+REQUIRED
+COMPONENTS
+  Notifications
+)
+
 find_package(fmt REQUIRED)
 find_package(libassert REQUIRED)
 

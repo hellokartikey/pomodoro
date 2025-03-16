@@ -10,10 +10,20 @@
 #include "common.hpp"
 
 Backend::Backend(QObject* parent)
-    : QObject(parent) {
-  QObject::connect(&timer(), &QTimer::timeout, this, &Backend::tick);
-  QObject::connect(this, &Backend::sigWorkTime, this, &Backend::resetWork);
-  QObject::connect(this, &Backend::sigBreakTime, this, &Backend::resetBreak);
+    : QObject(parent),
+      m_to_break(new KNotification("toBreak", KNotification::Persistent)),
+      m_to_work(new KNotification("toWork", KNotification::Persistent)) {
+  // TODO: Improve the notification texts
+  m_to_break->setTitle("Take a break...");
+  m_to_break->setText("Stretch your legs.");
+
+  m_to_work->setTitle("Start working...");
+  m_to_work->setText("Do your work");
+
+  connect(&timer(), &QTimer::timeout, this, &Backend::tick);
+  connect(this, &Backend::sigWorkTime, this, &Backend::resetWork);
+  connect(this, &Backend::sigBreakTime, this, &Backend::resetBreak);
+
   timer().start(TIMER_INTERVAL);
 }
 
@@ -50,6 +60,8 @@ void Backend::switchMode() {
     default:
       UNREACHABLE("Invalid mode is set");
   }
+
+  notify();
 }
 
 int Backend::lap() const {
@@ -257,6 +269,21 @@ int Backend::breakMin() const {
 
 int Backend::breakSec() const {
   return breakTime().count() % MINUTE;
+}
+
+void Backend::notify() {
+  switch (mode()) {
+    case Break:
+      m_to_break->sendEvent();
+      break;
+    case Work:
+      m_to_work->sendEvent();
+      break;
+    default:
+      UNREACHABLE("This should not have happened");
+  }
+
+  KNotification::beep();
 }
 
 #include "moc_backend.cpp"

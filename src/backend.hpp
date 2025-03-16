@@ -10,6 +10,8 @@
 #include <QString>
 #include <QTimer>
 
+#include <KNotification>
+
 using namespace std::literals;
 
 namespace chrono = std::chrono;
@@ -126,6 +128,8 @@ class Backend : public QObject {
   [[nodiscard]] int breakMin() const;
   [[nodiscard]] int breakSec() const;
 
+  void notify();
+
  private:
   int m_lap = INITIAL_LAP;
 
@@ -138,6 +142,9 @@ class Backend : public QObject {
 
   chrono::seconds m_work_time = DEFAULT_WORK_TIME;
   chrono::seconds m_break_time = DEFAULT_BREAK_TIME;
+
+  KNotification* m_to_work = nullptr;
+  KNotification* m_to_break = nullptr;
 };
 
 #endif

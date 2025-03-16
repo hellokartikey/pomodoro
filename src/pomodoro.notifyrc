@@ -1,0 +1,9 @@
+[Global]
+Name=Pomodoro
+IconName=kalarm
+
+[Event/toBreak]
+Action=Popup
+
+[Event/toWork]
+Action=Popup
