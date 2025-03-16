@@ -60,6 +60,8 @@ class Backend : public QObject {
   explicit Backend(QObject* parent = nullptr);
 
  public:
+  ~Backend() override = default;
+
   static Backend* get();
   static Backend* create(QQmlEngine* qml_engine, QJSEngine* js_engine);
 

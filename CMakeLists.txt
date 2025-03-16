@@ -1,9 +1,11 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.30)
 
 project(pomodoro
   LANGUAGES CXX
   VERSION 0.1.0
 )
+
+option(CLANG_FORMAT "Use clang-format to format source files" ON)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -22,9 +24,13 @@ find_package(fmt REQUIRED)
 find_package(libassert REQUIRED)
 
 find_package(ECM REQUIRED NO_MODULE)
-set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-include(KDEInstallDirs6)
+if (CLANG_FORMAT)
+  include(clang_format)
+endif()
+
+include(KDEInstallDirs)
 
 qt_standard_project_setup()
 qt_policy(SET QTP0001 NEW)

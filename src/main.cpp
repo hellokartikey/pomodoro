@@ -3,8 +3,6 @@
 #include <QQuickStyle>
 
 int main(int argc, char* argv[]) {
-  using namespace Qt::Literals;
-
   auto app = QGuiApplication{argc, argv};
   auto qml = QQmlApplicationEngine{};
 
