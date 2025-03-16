@@ -12,7 +12,7 @@ ToolBar {
     Label {
       id: label
 
-      text: `Lap ${Backend.lap}`
+      text: Backend.mode == Backend.Work ? `Lap ${Backend.lap}` : 'Break'
 
       font.pointSize: 12
     }

@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import org.kde.kirigami as Kirigami
+
 import Pomodoro
 
 Page {
@@ -9,91 +11,67 @@ Page {
 
   header: Header {}
 
-  Item {
-    id: clockclockItem
+  Column {
+    anchors.centerIn: parent
 
-    anchors.fill: parent
+    spacing: Kirigami.Units.gridUnit
 
-    Column {
-      anchors.centerIn: parent
+    Text {
+      anchors.horizontalCenter: parent.horizontalCenter
 
-      spacing: 10
+      text: `${Backend.min}:${Backend.sec}`
+      color: Kirigami.Theme.textColor
 
-      Text {
-        id: modeText
+      font.pointSize: Kirigami.Theme.defaultFont.pointSize * 4
+      font.weight: Font.Light
 
-        anchors.horizontalCenter: parent.horizontalCenter
+      horizontalAlignment: Text.AlignHCenter
+    }
 
-        text: Backend.mode == Backend.Work ? "Work" : "Break"
-        font.pointSize: 24
-        font.weight: Font.Light
+    ProgressBar {
+      anchors.horizontalCenter: parent.horizontalCenter
+
+      value: Backend.progressBar
+    }
+
+    Row {
+      anchors.horizontalCenter: parent.horizontalCenter
+      spacing: Kirigami.Units.gridUnit
+
+      Button {
+        text: "Start"
+        icon.name: "media-playback-start-symbolic"
+        display: AbstractButton.IconOnly
+
+        visible: Backend.isPaused
+
+        onClicked: { Backend.start() }
       }
 
-      ProgressBar {
-        id: progress
+      Button {
+        text: "Pause"
+        icon.name: "media-playback-pause-symbolic"
+        display: AbstractButton.IconOnly
 
-        anchors.horizontalCenter: parent.horizontalCenter
+        visible: ! Backend.isPaused
 
-        value: Backend.progressBar
+        onClicked: { Backend.pause() }
       }
 
-      Text {
-        id: timerText
+      Button {
+        text: "Reset"
+        icon.name: "view-refresh-symbolic"
+        display: AbstractButton.IconOnly
 
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        text: `${Backend.min}:${Backend.sec}`
-
-        font.pointSize: 32
-
-        horizontalAlignment: Text.AlignHCenter
+        onClicked: { Backend.reset() }
       }
 
-      Row {
-        id: actionRow
+      Button {
+        text: "Skip"
+        icon.name: "media-skip-forward-symbolic"
+        display: AbstractButton.IconOnly
 
-        anchors.horizontalCenter: parent.horizontalCenter
-        spacing: 10
-
-        Button {
-          id: startButton
-
-          text: "Start"
-          icon.name: "media-playback-start-symbolic"
-          display: AbstractButton.IconOnly
-
-          visible: Backend.isPaused
-
-          onClicked: { Backend.start() }
-        }
-
-        Button {
-          id: pauseButton
-
-          text: "Pause"
-          icon.name: "media-playback-pause-symbolic"
-          display: AbstractButton.IconOnly
-
-          visible: ! Backend.isPaused
-
-          onClicked: { Backend.pause() }
-        }
-
-        Button {
-          text: "Reset"
-          icon.name: "view-refresh-symbolic"
-          display: AbstractButton.IconOnly
-
-          onClicked: { Backend.reset() }
-        }
-
-        Button {
-          text: "Skip"
-          icon.name: "media-skip-forward-symbolic"
-          display: AbstractButton.IconOnly
-
-          onClicked: { Backend.skip() }
-        }
+        onClicked: { Backend.skip() }
       }
     }
   }
