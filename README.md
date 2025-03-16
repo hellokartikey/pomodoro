@@ -11,7 +11,7 @@ Some features that I wanted to have in,
 1. Minimal interface
 1. Lap counter
 1. Customizable
-1. Notifications (TODO)
+1. Notifications
 
 ## Install
 
