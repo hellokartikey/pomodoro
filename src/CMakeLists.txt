@@ -22,6 +22,7 @@ PRIVATE
   Qt6::Gui
   Qt6::QuickControls2
   KF6::Notifications
+  KF6::Kirigami
   fmt::fmt
   libassert::assert
 )

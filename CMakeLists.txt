@@ -24,6 +24,7 @@ find_package(KF6
 REQUIRED
 COMPONENTS
   Notifications
+  Kirigami
 )
 
 find_package(fmt REQUIRED)
