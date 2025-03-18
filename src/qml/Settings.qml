@@ -2,7 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-Page {
+import org.kde.kirigami as Kirigami
+
+Kirigami.Page {
   id: root
 
   function updateWork() {
@@ -13,38 +15,7 @@ Page {
     Backend.setBreakTime(breakMin.value, breakSec.value);
   }
 
-  header: ToolBar {
-    id: headerBar
-
-    leftPadding: 10
-    rightPadding: 10
-
-    RowLayout {
-      anchors.fill: parent
-
-      ToolButton {
-        text: "Close"
-        icon.name: "draw-arrow-back-symbolic"
-        display: AbstractButton.IconOnly
-
-        onClicked: { pageStack.pop() }
-      }
-
-      Label {
-        id: label
-
-        text: "Settings"
-
-        font.pointSize: 12
-      }
-
-      Item {
-        Layout.fillWidth: true
-
-        height: 10
-      }
-    }
-  }
+  title: "Settings"
 
   Grid {
     anchors.centerIn: parent

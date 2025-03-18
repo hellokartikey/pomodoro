@@ -22,13 +22,7 @@ Kirigami.ApplicationWindow {
 
   title: "Pomodoro"
 
-  StackView {
-    id: pageStack
-
-    anchors.fill: parent
-
-    initialItem: mainPage
-  }
+  pageStack.initialPage: mainPage
 
   Component {
     id: mainPage

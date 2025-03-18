@@ -6,10 +6,23 @@ import org.kde.kirigami as Kirigami
 
 import Pomodoro
 
-Page {
+Kirigami.Page {
   id: root
 
-  header: Header {}
+  title: Backend.mode == Backend.Work ? `Lap ${Backend.lap}` : 'Break'
+
+  actions: [
+    Kirigami.Action {
+      icon.name: "application-menu-symbolic"
+
+      Kirigami.Action {
+        text: "Settings"
+        icon.name: "settings-configure-symbolic"
+
+        onTriggered: { pageStack.layers.push(settingsPage) }
+      }
+    }
+  ]
 
   Column {
     anchors.centerIn: parent

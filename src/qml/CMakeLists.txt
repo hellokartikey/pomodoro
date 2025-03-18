@@ -3,6 +3,5 @@ NO_CACHEGEN
 QML_FILES
   Main.qml
   Clock.qml
-  Header.qml
   Settings.qml
 )
