@@ -9,8 +9,8 @@
 
 Backend::Backend(QObject* parent)
     : QObject(parent),
-      m_to_break(new KNotification("toBreak", KNotification::Persistent)),
-      m_to_work(new KNotification("toWork", KNotification::Persistent)) {
+      m_to_break(new KNotification("toBreak", KNotification::Persistent, this)),
+      m_to_work(new KNotification("toWork", KNotification::Persistent, this)) {
   // TODO: Improve the notification texts
   m_to_break->setTitle("Break time");
   m_to_break->setText("Take a short break. Stretch and unwind.");
@@ -23,21 +23,6 @@ Backend::Backend(QObject* parent)
   connect(this, &Backend::sigBreakTime, this, &Backend::resetBreak);
 
   timer().start(TIMER_INTERVAL);
-}
-
-Backend* Backend::get() {
-  static auto item = Backend{nullptr};
-  return &item;
-}
-
-Backend* Backend::create(QQmlEngine* qml_engine, QJSEngine* js_engine) {
-  std::ignore = qml_engine;
-  std::ignore = js_engine;
-
-  auto* ptr = Backend::get();
-  QJSEngine::setObjectOwnership(ptr, QJSEngine::CppOwnership);
-
-  return ptr;
 }
 
 void Backend::reset() {

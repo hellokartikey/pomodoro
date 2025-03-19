@@ -56,13 +56,9 @@ class Backend : public QObject {
 
   Q_PROPERTY(float progressBar READ progressBar NOTIFY sigSec);
 
-  explicit Backend(QObject* parent = nullptr);
-
  public:
+  explicit Backend(QObject* parent = nullptr);
   ~Backend() override = default;
-
-  static Backend* get();
-  static Backend* create(QQmlEngine* qml_engine, QJSEngine* js_engine);
 
   Q_INVOKABLE void reset();
 
