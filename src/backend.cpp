@@ -3,6 +3,8 @@
 #include <chrono>
 #include <print>
 
+#include <QRandomGenerator>
+
 #include <libassert/assert.hpp>
 
 #include "about.hpp"
@@ -11,18 +13,7 @@
 using namespace Qt::StringLiterals;
 
 Backend::Backend(QObject* parent)
-    : QObject(parent),
-      m_to_work(
-          new KNotification(u"toWork"_s, KNotification::Persistent, this)),
-      m_to_break(
-          new KNotification(u"toBreak"_s, KNotification::Persistent, this)) {
-  // TODO: Improve the notification texts
-  m_to_break->setTitle(u"Break time"_s);
-  m_to_break->setText(u"Take a short break. Stretch and unwind."_s);
-
-  m_to_work->setTitle(u"Back to work"_s);
-  m_to_work->setText(u"Your break has ended. Keep the momentum going."_s);
-
+    : QObject(parent) {
   initAboutData();
 
   connect(&timer(), &QTimer::timeout, this, &Backend::tick);
@@ -250,23 +241,65 @@ int Backend::breakSec() const {
   return breakTime().count() % MINUTE;
 }
 
-void Backend::notify() {
+std::tuple<QString, QString> Backend::toBreakText() const {
+  static const QList<std::pair<QString, QString>> MESSAGES = {
+      {u"Stretch and Refresh"_s,
+       u"It's time to stretch, drink some water, and take a short walk to clear your mind."_s},
+      {u"Recharge Your Body"_s,
+       u"Stand up, stretch, hydrate, and enjoy a quick walk to feel re-energized."_s},
+      {u"Take a Breather"_s,
+       u"Stretch, drink water and step outside of a short walk to refresh yourself."_s},
+      {u"Walk, Stretch, Drink"_s,
+       u"Stretch your muscles, drink some water, and go for a quick walk to recharge."_s},
+      {u"Stretch and Hydrate"_s,
+       u"It’s time to stretch, hydrate, and take a quick walk to feel your best."_s},
+  };
+
+  return MESSAGES[QRandomGenerator::global()->bounded(MESSAGES.size())];
+}
+
+std::tuple<QString, QString> Backend::toWorkText() const {
+  static const QList<std::pair<QString, QString>> MESSAGES = {
+      {u"Time to Refocus"_s,
+       u"Your break is over—let’s dive back into your work and keep making progress."_s},
+      {u"Let’s Get Back to It"_s,
+       u"It’s time to continue where you left off and tackle the next step."_s},
+      {u"Back to Work"_s,
+       u"Let’s pick up where you left off and stay on track with your tasks."_s},
+      {u"Time to Get Back On Track"_s,
+       u"Let’s continue with your work and keep the progress flowing."_s},
+      {u"Let’s Get Back on Track"_s,
+       u"Time to continue and keep making steady progress."_s},
+  };
+
+  return MESSAGES[QRandomGenerator::global()->bounded(MESSAGES.size())];
+}
+
+std::tuple<QString, QString, QString> Backend::notificationText() const {
   switch (mode()) {
-    case Break:
-      ASSERT_VAL(m_to_break)->sendEvent();
-      break;
-    case Work:
-      ASSERT_VAL(m_to_work)->sendEvent();
-      break;
+    case Break: {
+      auto [title, text] = toBreakText();
+      return {u"toBreak"_s, title, text};
+    }
+    case Work: {
+      auto [title, text] = toWorkText();
+      return {u"toWork"_s, title, text};
+    }
     default:
       UNREACHABLE();
   }
+}
+
+void Backend::notify() const {
+  auto [event, title, text] = notificationText();
+
+  KNotification::event(event, title, text);
 
   // TODO: Use custom sounds instead of beep
   KNotification::beep();
 }
 
-KAboutData Backend::aboutData() {
+KAboutData Backend::aboutData() const {
   return KAboutData::applicationData();
 }
 

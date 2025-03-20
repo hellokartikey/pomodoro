@@ -2,6 +2,7 @@
 #define HK_POMODORO_BACKEND_HPP
 
 #include <cstdint>
+#include <tuple>
 
 #include <QtQml/qqmlregistration.h>
 #include <QObject>
@@ -121,9 +122,13 @@ class Backend : public QObject {
   [[nodiscard]] int breakMin() const;
   [[nodiscard]] int breakSec() const;
 
-  void notify();
+  [[nodiscard]] std::tuple<QString, QString> toBreakText() const;
+  [[nodiscard]] std::tuple<QString, QString> toWorkText() const;
+  [[nodiscard]] std::tuple<QString, QString, QString> notificationText() const;
 
-  KAboutData aboutData();
+  void notify() const;
+
+  [[nodiscard]] KAboutData aboutData() const;
 
  private:
   int m_lap = INITIAL_LAP;
@@ -137,9 +142,6 @@ class Backend : public QObject {
 
   chrono::seconds m_work_time = DEFAULT_WORK_TIME;
   chrono::seconds m_break_time = DEFAULT_BREAK_TIME;
-
-  KNotification* m_to_work = nullptr;
-  KNotification* m_to_break = nullptr;
 };
 
 #endif
