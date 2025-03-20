@@ -9,6 +9,8 @@ qt_add_executable(pomodoro
   common.hpp
   backend.hpp
   backend.cpp
+  about.hpp
+  about.cpp
 )
 
 qt_add_qml_module(pomodoro

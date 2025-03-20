@@ -3,12 +3,12 @@
 
 #include <cstdint>
 
-#include <QJSEngine>
+#include <QtQml/qqmlregistration.h>
 #include <QObject>
-#include <QQmlEngine>
 #include <QString>
 #include <QTimer>
 
+#include <KAboutData>
 #include <KNotification>
 
 using namespace std::literals;
@@ -55,6 +55,8 @@ class Backend : public QObject {
   Q_PROPERTY(int breakSec READ breakSec NOTIFY sigBreakTime)
 
   Q_PROPERTY(float progressBar READ progressBar NOTIFY sigSec)
+
+  Q_PROPERTY(KAboutData aboutData READ aboutData CONSTANT)
 
  public:
   explicit Backend(QObject* parent = nullptr);
@@ -120,6 +122,8 @@ class Backend : public QObject {
   [[nodiscard]] int breakSec() const;
 
   void notify();
+
+  KAboutData aboutData();
 
  private:
   int m_lap = INITIAL_LAP;

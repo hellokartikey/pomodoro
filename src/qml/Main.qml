@@ -34,7 +34,7 @@ Kirigami.ApplicationWindow {
     id: aboutPage
 
     Kirigami.AboutPage {
-      aboutData: About
+      aboutData: Backend.aboutData
     }
   }
 }

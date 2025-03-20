@@ -5,6 +5,7 @@
 
 #include <libassert/assert.hpp>
 
+#include "about.hpp"
 #include "common.hpp"
 
 using namespace Qt::StringLiterals;
@@ -21,6 +22,8 @@ Backend::Backend(QObject* parent)
 
   m_to_work->setTitle(u"Back to work"_s);
   m_to_work->setText(u"Your break has ended. Keep the momentum going."_s);
+
+  initAboutData();
 
   connect(&timer(), &QTimer::timeout, this, &Backend::tick);
   connect(this, &Backend::sigWorkTime, this, &Backend::resetWork);
@@ -250,10 +253,10 @@ int Backend::breakSec() const {
 void Backend::notify() {
   switch (mode()) {
     case Break:
-      m_to_break->sendEvent();
+      ASSERT_VAL(m_to_break)->sendEvent();
       break;
     case Work:
-      m_to_work->sendEvent();
+      ASSERT_VAL(m_to_work)->sendEvent();
       break;
     default:
       UNREACHABLE();
@@ -261,6 +264,10 @@ void Backend::notify() {
 
   // TODO: Use custom sounds instead of beep
   KNotification::beep();
+}
+
+KAboutData Backend::aboutData() {
+  return KAboutData::applicationData();
 }
 
 #include "moc_backend.cpp"
