@@ -1,21 +1,26 @@
-qt_add_executable(${PROJECT_NAME})
+ecm_setup_version(
+  ${PROJECT_VERSION}
+  VARIABLE_PREFIX POMODORO
+  VERSION_HEADER version.hpp
+)
 
-target_sources(${PROJECT_NAME}
-PRIVATE
+qt_add_executable(pomodoro
   main.cpp
   common.hpp
   backend.hpp
   backend.cpp
 )
 
-qt_add_qml_module(${PROJECT_NAME}
+qt_add_qml_module(pomodoro
 URI Pomodoro
 VERSION 1.0
+QML_FILES
+  qml/Main.qml
+  qml/Clock.qml
+  qml/Settings.qml
 )
 
-add_subdirectory(qml)
-
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(pomodoro
 PRIVATE
   Qt6::Core
   Qt6::Quick
@@ -23,6 +28,7 @@ PRIVATE
   Qt6::QuickControls2
   KF6::Notifications
   KF6::Kirigami
+  KF6::CoreAddons
   fmt::fmt
   libassert::assert
 )

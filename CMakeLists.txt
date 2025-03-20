@@ -11,7 +11,10 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-find_package(Qt6
+find_package(ECM "6.0" REQUIRED NO_MODULE)
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
+find_package(Qt6 "6.6"
 REQUIRED
 COMPONENTS
   Core
@@ -20,26 +23,35 @@ COMPONENTS
   QuickControls2
 )
 
-find_package(KF6
+find_package(KF6 "6.0"
 REQUIRED
 COMPONENTS
   Notifications
   Kirigami
+  CoreAddons
 )
 
 find_package(fmt REQUIRED)
 find_package(libassert REQUIRED)
 
-find_package(ECM REQUIRED NO_MODULE)
-set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-
 if (CLANG_FORMAT)
   include(clang_format)
 endif()
 
-include(KDEInstallDirs)
+include(FeatureSummary)
 
-qt_standard_project_setup()
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+include(KDECompilerSettings NO_POLICY_SCOPE)
+include(ECMSetupVersion)
+
+include(CMakePrintHelpers)
+cmake_print_variables(ECM_GLOBAL_FIND_VERSION)
+
+feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
+
 qt_policy(SET QTP0001 NEW)
+qt_policy(SET QTP0004 NEW)
+qt_standard_project_setup()
 
 add_subdirectory(src)

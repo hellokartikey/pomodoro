@@ -21,6 +21,13 @@ Kirigami.Page {
 
         onTriggered: { pageStack.layers.push(settingsPage) }
       }
+
+      Kirigami.Action {
+        text: "About"
+        icon.name: "help-about-symbolic"
+
+        onTriggered: { pageStack.layers.push(aboutPage) }
+      }
     }
   ]
 

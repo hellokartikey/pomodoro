@@ -7,16 +7,20 @@
 
 #include "common.hpp"
 
+using namespace Qt::StringLiterals;
+
 Backend::Backend(QObject* parent)
     : QObject(parent),
-      m_to_break(new KNotification("toBreak", KNotification::Persistent, this)),
-      m_to_work(new KNotification("toWork", KNotification::Persistent, this)) {
+      m_to_work(
+          new KNotification(u"toWork"_s, KNotification::Persistent, this)),
+      m_to_break(
+          new KNotification(u"toBreak"_s, KNotification::Persistent, this)) {
   // TODO: Improve the notification texts
-  m_to_break->setTitle("Break time");
-  m_to_break->setText("Take a short break. Stretch and unwind.");
+  m_to_break->setTitle(u"Break time"_s);
+  m_to_break->setText(u"Take a short break. Stretch and unwind."_s);
 
-  m_to_work->setTitle("Back to work");
-  m_to_work->setText("Your break has ended. Keep the momentum going.");
+  m_to_work->setTitle(u"Back to work"_s);
+  m_to_work->setText(u"Your break has ended. Keep the momentum going."_s);
 
   connect(&timer(), &QTimer::timeout, this, &Backend::tick);
   connect(this, &Backend::sigWorkTime, this, &Backend::resetWork);

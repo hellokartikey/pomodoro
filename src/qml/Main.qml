@@ -9,11 +9,11 @@ import Pomodoro
 Kirigami.ApplicationWindow {
   id: root
 
-  height: 300
-  width: 300
+  height: 400
+  width: 400
 
-  minimumHeight: 300
-  minimumWidth: 300
+  minimumHeight: 400
+  minimumWidth: 400
 
   maximumWidth: minimumWidth
   maximumHeight: minimumHeight
@@ -22,17 +22,19 @@ Kirigami.ApplicationWindow {
 
   title: "Pomodoro"
 
-  pageStack.initialPage: mainPage
-
-  Component {
-    id: mainPage
-
-    Clock {}
-  }
+  pageStack.initialPage: Clock {}
 
   Component {
     id: settingsPage
 
     Settings {}
+  }
+
+  Component {
+    id: aboutPage
+
+    Kirigami.AboutPage {
+      aboutData: About
+    }
   }
 }
