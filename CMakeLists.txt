@@ -55,3 +55,4 @@ qt_policy(SET QTP0004 NEW)
 qt_standard_project_setup()
 
 add_subdirectory(src)
+add_subdirectory(data)

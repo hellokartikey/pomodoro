@@ -4,7 +4,7 @@ ecm_setup_version(
   VERSION_HEADER version.hpp
 )
 
-qt_add_executable(pomodoro
+qt_add_executable(${PROJECT_NAME}
   main.cpp
   common.hpp
   backend.hpp
@@ -13,7 +13,7 @@ qt_add_executable(pomodoro
   about.cpp
 )
 
-qt_add_qml_module(pomodoro
+qt_add_qml_module(${PROJECT_NAME}
 URI Pomodoro
 VERSION 1.0
 QML_FILES
@@ -22,7 +22,7 @@ QML_FILES
   qml/Settings.qml
 )
 
-target_link_libraries(pomodoro
+target_link_libraries(${PROJECT_NAME}
 PRIVATE
   Qt6::Core
   Qt6::Quick
@@ -36,4 +36,3 @@ PRIVATE
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${KDE_INSTALL_BINDIR})
-install(FILES ${PROJECT_NAME}.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR})

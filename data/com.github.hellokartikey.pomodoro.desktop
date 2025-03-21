@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=pomodoro %u
+Name=Pomodoro
+Icon=ktimer
+Comment=A simple pomodoro timer
+Terminal=false
+Categories=Utilities
