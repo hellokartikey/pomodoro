@@ -7,8 +7,12 @@
 
 #include <KAboutData>
 #include <KColorSchemeManager>
+#include <KConfig>
+#include <KConfigGroup>
 
-class Misc : public QObject {
+namespace chrono = std::chrono;
+
+class Config : public QObject {
   Q_OBJECT
   QML_ELEMENT
   QML_SINGLETON
@@ -20,7 +24,7 @@ class Misc : public QObject {
   Q_PROPERTY(KAboutData aboutData READ aboutData CONSTANT)
 
  public:
-  explicit Misc(QObject* parent = nullptr);
+  explicit Config(QObject* parent = nullptr);
 
   [[nodiscard]] QAbstractItemModel* colorSchemes() const;
 
@@ -30,8 +34,17 @@ class Misc : public QObject {
 
   KAboutData aboutData() const;
 
+  [[nodiscard]] chrono::seconds workTime();
+  void setWorkTime(int min, int sec);
+
+  [[nodiscard]] chrono::seconds breakTime();
+  void setBreakTime(int min, int sec);
+
  private:
   KColorSchemeManager* m_color;
+
+  KConfig m_config;
+  KConfigGroup m_general_config;
 };
 
 #endif

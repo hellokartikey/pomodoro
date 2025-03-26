@@ -28,9 +28,9 @@ Addons.FormCardPage {
     Addons.FormComboBoxDelegate {
       text: "Color Scheme"
       textRole: "display"
-      model: Misc.colorSchemes
-      currentIndex: Misc.colorScheme
-      onCurrentValueChanged: Misc.setColorScheme(currentIndex)
+      model: Config.colorSchemes
+      currentIndex: Config.colorScheme
+      onCurrentValueChanged: Config.setColorScheme(currentIndex)
     }
   }
 

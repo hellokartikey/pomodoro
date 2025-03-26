@@ -9,8 +9,7 @@
 #include <QString>
 #include <QTimer>
 
-#include <KConfig>
-#include <KConfigGroup>
+#include "config.hpp"
 
 using namespace std::literals;
 
@@ -138,8 +137,7 @@ class Backend : public QObject {
   chrono::seconds m_work_time{};
   chrono::seconds m_break_time{};
 
-  KConfig m_config;
-  KConfigGroup m_general_config;
+  Config m_config;
 };
 
 #endif

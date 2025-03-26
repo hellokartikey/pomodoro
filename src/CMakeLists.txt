@@ -11,8 +11,8 @@ qt_add_executable(${PROJECT_NAME}
   backend.cpp
   about.hpp
   about.cpp
-  misc.hpp
-  misc.cpp
+  config.hpp
+  config.cpp
 )
 
 qt_add_qml_module(${PROJECT_NAME}
