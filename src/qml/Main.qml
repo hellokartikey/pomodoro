@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import org.kde.kirigami as Kirigami
+import org.kde.kirigamiaddons.formcard as Addons
 
 import Pomodoro
 
@@ -33,7 +34,7 @@ Kirigami.ApplicationWindow {
   Component {
     id: aboutPage
 
-    Kirigami.AboutPage {
+    Addons.AboutPage {
       aboutData: Backend.aboutData
     }
   }

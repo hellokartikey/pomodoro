@@ -29,6 +29,8 @@ COMPONENTS
   Notifications
   Kirigami
   CoreAddons
+  I18n
+  QQC2DesktopStyle
 )
 
 find_package(fmt REQUIRED)

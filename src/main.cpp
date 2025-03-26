@@ -1,8 +1,9 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include <QQuickStyle>
 
-#include "backend.hpp"
+#include <KLocalizedContext>
 
 using namespace Qt::StringLiterals;
 
@@ -19,6 +20,7 @@ int main(int argc, char* argv[]) {
     QQuickStyle::setStyle(u"org.kde.desktop"_s);
   }
 
+  qml.rootContext()->setContextObject(new KLocalizedContext(&qml));
   qml.loadFromModule(u"Pomodoro"_s, u"Main"_s);
 
   return app.exec();

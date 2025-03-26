@@ -31,6 +31,7 @@ PRIVATE
   KF6::Notifications
   KF6::Kirigami
   KF6::CoreAddons
+  KF6::I18n
   fmt::fmt
   libassert::assert
 )

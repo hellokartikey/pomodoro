@@ -10,6 +10,7 @@ void initAboutData() {
   auto about = KAboutData();
   about.setBugAddress("");
   about.setComponentName(u"pomodoro"_s);
+  about.setCopyrightStatement(u"© 2025 Kartikey Subramanium"_s);
   about.setDesktopFileName(u"com.github.hellokartikey.pomodoro"_s);
   about.setDisplayName(u"Pomodoro"_s);
   about.setHomepage(u"https://github.com/hellokartikey/pomodoro"_s);
