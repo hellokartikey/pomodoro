@@ -6,6 +6,7 @@ project(pomodoro
 )
 
 option(CLANG_FORMAT "Use clang-format to format source files" ON)
+option(UBSAN "Enable undefined behaviour sanitizer" ON)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -28,6 +29,7 @@ find_package(KF6 "6.0"
 REQUIRED
 COMPONENTS
   ColorScheme
+  Config
   CoreAddons
   I18n
   Kirigami
@@ -40,6 +42,11 @@ find_package(libassert REQUIRED)
 
 if (CLANG_FORMAT)
   include(clang_format)
+endif()
+
+if (UBSAN)
+  add_compile_options(-fsanitize=undefined)
+  add_link_options(-fsanitize=undefined)
 endif()
 
 include(FeatureSummary)

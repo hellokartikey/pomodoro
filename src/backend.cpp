@@ -14,7 +14,20 @@
 using namespace Qt::StringLiterals;
 
 Backend::Backend(QObject* parent)
-    : QObject(parent) {
+    : QObject(parent),
+      m_general_config(&m_config, u"General"_s) {
+  int workMin = m_general_config.readEntry(u"workMin"_s, 25);
+  int workSec = m_general_config.readEntry(u"workSec"_s, 0);
+
+  setWorkTime(workMin, workSec);
+
+  int breakMin = m_general_config.readEntry(u"breakMin"_s, 5);
+  int breakSec = m_general_config.readEntry(u"breakSec"_s, 0);
+
+  setBreakTime(breakMin, breakSec);
+
+  setTime(workTime());
+
   connect(&timer(), &QTimer::timeout, this, &Backend::tick);
   connect(this, &Backend::sigWorkTime, this, &Backend::resetWork);
   connect(this, &Backend::sigBreakTime, this, &Backend::resetBreak);
@@ -200,6 +213,9 @@ void Backend::setWorkTime(int min, int sec) {
     sec = 1;
   }
 
+  m_general_config.writeEntry(u"workMin"_s, min);
+  m_general_config.writeEntry(u"workSec"_s, sec);
+
   auto time = as<chrono::seconds>(chrono::minutes{min}) + chrono::seconds{sec};
   setWorkTime(time);
 }
@@ -227,6 +243,9 @@ void Backend::setBreakTime(int min, int sec) {
   if (min == 0 and sec == 0) {
     sec = 1;
   }
+
+  m_general_config.writeEntry(u"breakMin"_s, min);
+  m_general_config.writeEntry(u"breakSec"_s, sec);
 
   auto time = as<chrono::seconds>(chrono::minutes{min}) + chrono::seconds{sec};
   setBreakTime(time);

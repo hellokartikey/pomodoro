@@ -9,6 +9,9 @@
 #include <QString>
 #include <QTimer>
 
+#include <KConfig>
+#include <KConfigGroup>
+
 using namespace std::literals;
 
 namespace chrono = std::chrono;
@@ -30,8 +33,6 @@ class Backend : public QObject {
   static constexpr auto MINUTE = 60;
 
   static constexpr auto TIMER_INTERVAL = 1s;
-  static constexpr auto DEFAULT_WORK_TIME = 25min;
-  static constexpr auto DEFAULT_BREAK_TIME = 5min;
 
  private:
   Q_PROPERTY(int lap READ lap NOTIFY sigLap)
@@ -90,6 +91,7 @@ class Backend : public QObject {
 
   chrono::seconds& target();
   [[nodiscard]] const chrono::seconds& target() const;
+  void setTarget(const chrono::seconds& target);
 
   void setTime(const chrono::seconds& value);
 
@@ -130,11 +132,14 @@ class Backend : public QObject {
   bool m_is_paused = true;
 
   QTimer m_timer;
-  chrono::seconds m_remaining = DEFAULT_WORK_TIME;
-  chrono::seconds m_target = DEFAULT_WORK_TIME;
+  chrono::seconds m_remaining{};
+  chrono::seconds m_target{};
 
-  chrono::seconds m_work_time = DEFAULT_WORK_TIME;
-  chrono::seconds m_break_time = DEFAULT_BREAK_TIME;
+  chrono::seconds m_work_time{};
+  chrono::seconds m_break_time{};
+
+  KConfig m_config;
+  KConfigGroup m_general_config;
 };
 
 #endif
