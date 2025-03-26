@@ -11,6 +11,8 @@ qt_add_executable(${PROJECT_NAME}
   backend.cpp
   about.hpp
   about.cpp
+  misc.hpp
+  misc.cpp
 )
 
 qt_add_qml_module(${PROJECT_NAME}
@@ -28,10 +30,12 @@ PRIVATE
   Qt6::Quick
   Qt6::Gui
   Qt6::QuickControls2
-  KF6::Notifications
-  KF6::Kirigami
+  Qt6::Widgets
+  KF6::ColorScheme
   KF6::CoreAddons
   KF6::I18n
+  KF6::Kirigami
+  KF6::Notifications
   fmt::fmt
   libassert::assert
 )

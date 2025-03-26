@@ -9,8 +9,6 @@
 #include <QString>
 #include <QTimer>
 
-#include <KAboutData>
-
 using namespace std::literals;
 
 namespace chrono = std::chrono;
@@ -55,8 +53,6 @@ class Backend : public QObject {
   Q_PROPERTY(int breakSec READ breakSec NOTIFY sigBreakTime)
 
   Q_PROPERTY(float progressBar READ progressBar NOTIFY sigSec)
-
-  Q_PROPERTY(KAboutData aboutData READ aboutData CONSTANT)
 
  public:
   explicit Backend(QObject* parent = nullptr);
@@ -126,8 +122,6 @@ class Backend : public QObject {
   [[nodiscard]] std::tuple<QString, QString, QString> notificationText() const;
 
   void notify();
-
-  [[nodiscard]] KAboutData aboutData() const;
 
  private:
   int m_lap = INITIAL_LAP;

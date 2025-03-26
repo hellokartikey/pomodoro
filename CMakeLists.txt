@@ -21,15 +21,17 @@ COMPONENTS
   Gui
   Quick
   QuickControls2
+  Widgets
 )
 
 find_package(KF6 "6.0"
 REQUIRED
 COMPONENTS
-  Notifications
-  Kirigami
+  ColorScheme
   CoreAddons
   I18n
+  Kirigami
+  Notifications
   QQC2DesktopStyle
 )
 

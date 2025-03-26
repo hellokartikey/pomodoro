@@ -21,6 +21,20 @@ Addons.FormCardPage {
   title: "Settings"
 
   Addons.FormHeader {
+    title: "Interface"
+  }
+
+  Addons.FormCard {
+    Addons.FormComboBoxDelegate {
+      text: "Color Scheme"
+      textRole: "display"
+      model: Misc.colorSchemes
+      currentIndex: Misc.colorScheme
+      onCurrentValueChanged: Misc.setColorScheme(currentIndex)
+    }
+  }
+
+  Addons.FormHeader {
     title: "Work Length"
   }
 

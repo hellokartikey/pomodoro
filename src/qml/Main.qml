@@ -35,7 +35,7 @@ Kirigami.ApplicationWindow {
     id: aboutPage
 
     Addons.AboutPage {
-      aboutData: Backend.aboutData
+      aboutData: Misc.aboutData
     }
   }
 }

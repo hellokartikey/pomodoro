@@ -9,15 +9,12 @@
 
 #include <libassert/assert.hpp>
 
-#include "about.hpp"
 #include "common.hpp"
 
 using namespace Qt::StringLiterals;
 
 Backend::Backend(QObject* parent)
     : QObject(parent) {
-  initAboutData();
-
   connect(&timer(), &QTimer::timeout, this, &Backend::tick);
   connect(this, &Backend::sigWorkTime, this, &Backend::resetWork);
   connect(this, &Backend::sigBreakTime, this, &Backend::resetBreak);
@@ -305,10 +302,6 @@ void Backend::notify() {
 
   // TODO: Use custom sounds instead of beep
   KNotification::beep();
-}
-
-KAboutData Backend::aboutData() const {
-  return KAboutData::applicationData();
 }
 
 #include "moc_backend.cpp"

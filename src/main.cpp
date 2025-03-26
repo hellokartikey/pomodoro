@@ -1,4 +1,4 @@
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickStyle>
@@ -8,7 +8,7 @@
 using namespace Qt::StringLiterals;
 
 int main(int argc, char* argv[]) {
-  auto app = QGuiApplication{argc, argv};
+  auto app = QApplication{argc, argv};
   auto qml = QQmlApplicationEngine{};
 
   QObject::connect(
