@@ -5,6 +5,8 @@
 
 #include <QRandomGenerator>
 
+#include <KNotification>
+
 #include <libassert/assert.hpp>
 
 #include "about.hpp"
@@ -290,10 +292,16 @@ std::tuple<QString, QString, QString> Backend::notificationText() const {
   }
 }
 
-void Backend::notify() const {
+void Backend::notify() {
   auto [event, title, text] = notificationText();
 
-  KNotification::event(event, title, text);
+  auto* notification =
+      new KNotification(event, KNotification::Persistent, this);
+
+  notification->setTitle(title);
+  notification->setText(text);
+
+  notification->sendEvent();
 
   // TODO: Use custom sounds instead of beep
   KNotification::beep();

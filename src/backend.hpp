@@ -10,7 +10,6 @@
 #include <QTimer>
 
 #include <KAboutData>
-#include <KNotification>
 
 using namespace std::literals;
 
@@ -126,7 +125,7 @@ class Backend : public QObject {
   [[nodiscard]] std::tuple<QString, QString> toWorkText() const;
   [[nodiscard]] std::tuple<QString, QString, QString> notificationText() const;
 
-  void notify() const;
+  void notify();
 
   [[nodiscard]] KAboutData aboutData() const;
 
