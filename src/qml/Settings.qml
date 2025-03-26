@@ -3,8 +3,11 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import org.kde.kirigami as Kirigami
+import org.kde.kirigamiaddons.formcard as Addons
 
-Kirigami.Page {
+import Pomodoro
+
+Addons.FormCardPage {
   id: root
 
   function updateWork() {
@@ -17,66 +20,55 @@ Kirigami.Page {
 
   title: "Settings"
 
-  Grid {
-    anchors.centerIn: parent
+  Addons.FormHeader {
+    title: "Work Length"
+  }
 
-    columns: 3
-    rows: 2
+  Addons.FormCard {
+    RowLayout {
+      Addons.FormSpinBoxDelegate {
+        id: workMin
+        label: "Minutes"
+        from: 0
+        to: 60
+        value: Backend.workMin
+        onValueChanged: updateWork()
+      }
 
-    spacing: 10
-
-    verticalItemAlignment: Grid.AlignVCenter
-
-    Label {
-      id: workLabel
-
-      text: "Work Time"
+      Addons.FormSpinBoxDelegate {
+        id: workSec
+        label: "Seconds"
+        from: 0
+        to: 60
+        value: Backend.workSec
+        onValueChanged: updateWork()
+      }
     }
+  }
 
-    SpinBox {
-      id: workMin
+  Addons.FormHeader {
+    title: "Break Length"
+  }
 
-      from: 0
-      to: 60
-      value: Backend.workMin
+  Addons.FormCard {
+    RowLayout {
+      Addons.FormSpinBoxDelegate {
+        id: breakMin
+        label: "Minutes"
+        from: 0
+        to: 60
+        value: Backend.breakMin
+        onValueChanged: updateBreak()
+      }
 
-      onValueChanged: updateWork()
-    }
-
-    SpinBox {
-      id: workSec
-
-      from: 0
-      to: 59
-      value: Backend.workSec
-
-      onValueChanged: updateWork()
-    }
-
-    Label {
-      id: breakLabel
-
-      text: "Break Time"
-    }
-
-    SpinBox {
-      id: breakMin
-
-      from: 0
-      to: 60
-      value: Backend.breakMin
-
-      onValueChanged: updateBreak()
-    }
-
-    SpinBox {
-      id: breakSec
-
-      from: 0
-      to: 59
-      value: Backend.breakSec
-
-      onValueChanged: updateBreak()
+      Addons.FormSpinBoxDelegate {
+        id: breakSec
+        label: "Seconds"
+        from: 0
+        to: 60
+        value: Backend.breakSec
+        onValueChanged: updateBreak()
+      }
     }
   }
 }
