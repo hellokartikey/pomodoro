@@ -50,3 +50,13 @@ modules:
 
         modules:
           - python3-conan.json
+
+      - name: kirigami-addons
+        build-system: cmake-ninja
+        config-opts:
+          - -DBUILD_TESTING=OFF
+
+        sources:
+          - type: archive
+            url: https://download.kde.org/stable/kirigami-addons/kirigami-addons-1.7.0.tar.xz
+            sha256: 7d854975185cf740de486d84f1e2ec3e4eadb66ac9fb897214cba9ab8cc492b1
