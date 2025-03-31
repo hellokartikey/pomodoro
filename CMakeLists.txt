@@ -40,10 +40,6 @@ COMPONENTS
 find_package(fmt REQUIRED)
 find_package(libassert REQUIRED)
 
-if (CLANG_FORMAT)
-  include(clang_format)
-endif()
-
 if (UBSAN)
   add_compile_options(-fsanitize=undefined)
   add_link_options(-fsanitize=undefined)
@@ -54,7 +50,13 @@ include(FeatureSummary)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDECompilerSettings NO_POLICY_SCOPE)
+include(KDEClangFormat)
+include(KDEGitCommitHooks)
 include(ECMSetupVersion)
+
+file(GLOB RECURSE CLANG_FORMAT_SOURCE_FILES *.cpp *.hpp)
+kde_clang_format(${CLANG_FORMAT_SOURCE_FILES})
+kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
 
 include(CMakePrintHelpers)
 cmake_print_variables(ECM_GLOBAL_FIND_VERSION)
