@@ -13,6 +13,8 @@ qt_add_executable(${PROJECT_NAME}
   about.cpp
   config.hpp
   config.cpp
+  notification.hpp
+  notification.cpp
 )
 
 qt_add_qml_module(${PROJECT_NAME}
@@ -29,6 +31,7 @@ PRIVATE
   Qt6::Core
   Qt6::Quick
   Qt6::Gui
+  Qt6::Multimedia
   Qt6::QuickControls2
   Qt6::Widgets
   KF6::ColorScheme

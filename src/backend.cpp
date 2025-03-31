@@ -3,10 +3,6 @@
 #include <chrono>
 #include <print>
 
-#include <QRandomGenerator>
-
-#include <KNotification>
-
 #include <libassert/assert.hpp>
 
 #include "common.hpp"
@@ -119,6 +115,7 @@ void Backend::pause() {
 }
 
 void Backend::start() {
+  m_notification.start();
   setPaused(false);
 }
 
@@ -251,71 +248,17 @@ int Backend::breakSec() const {
   return breakTime().count() % MINUTE;
 }
 
-std::tuple<QString, QString> Backend::toBreakText() const {
-  static const QList<std::pair<QString, QString>> MESSAGES = {
-      {u"Stretch and Refresh"_s,
-       u"It's time to stretch, drink some water, and take a short walk to clear your mind."_s},
-      {u"Recharge Your Body"_s,
-       u"Stand up, stretch, hydrate, and enjoy a quick walk to feel re-energized."_s},
-      {u"Take a Breather"_s,
-       u"Stretch, drink water and step outside of a short walk to refresh yourself."_s},
-      {u"Walk, Stretch, Drink"_s,
-       u"Stretch your muscles, drink some water, and go for a quick walk to recharge."_s},
-      {u"Stretch and Hydrate"_s,
-       u"It’s time to stretch, hydrate, and take a quick walk to feel your best."_s},
-  };
-
-  return MESSAGES[QRandomGenerator::global()->bounded(MESSAGES.size())];
-}
-
-std::tuple<QString, QString> Backend::toWorkText() const {
-  static const QList<std::pair<QString, QString>> MESSAGES = {
-      {u"Time to Refocus"_s,
-       u"Your break is over—let’s dive back into your work and keep making progress."_s},
-      {u"Let’s Get Back to It"_s,
-       u"It’s time to continue where you left off and tackle the next step."_s},
-      {u"Back to Work"_s,
-       u"Let’s pick up where you left off and stay on track with your tasks."_s},
-      {u"Time to Get Back On Track"_s,
-       u"Let’s continue with your work and keep the progress flowing."_s},
-      {u"Let’s Get Back on Track"_s,
-       u"Time to continue and keep making steady progress."_s},
-  };
-
-  return MESSAGES[QRandomGenerator::global()->bounded(MESSAGES.size())];
-}
-
-std::tuple<QString, QString, QString> Backend::notificationText() const {
+void Backend::notify() {
   switch (mode()) {
-    case Break: {
-      auto [title, text] = toBreakText();
-      return {u"toBreak"_s, title, text};
-    }
-    case Work: {
-      auto [title, text] = toWorkText();
-      return {u"toWork"_s, title, text};
-    }
+    case Break:
+      m_notification.notifyBreak();
+      break;
+    case Work:
+      m_notification.notifyWork();
+      break;
     default:
       UNREACHABLE();
   }
-}
-
-void Backend::notify() {
-  auto [event, title, text] = notificationText();
-
-  auto* notification =
-      new KNotification(event, KNotification::Persistent, this);
-
-  notification->setTitle(title);
-  notification->setText(text);
-
-  auto* action = notification->addAction(u"Continue"_s);
-  connect(action, &KNotificationAction::activated, this, &Backend::start);
-
-  notification->sendEvent();
-
-  // TODO: Use custom sounds instead of beep
-  KNotification::beep();
 }
 
 #include "moc_backend.cpp"

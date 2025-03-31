@@ -20,6 +20,7 @@ REQUIRED
 COMPONENTS
   Core
   Gui
+  Multimedia
   Quick
   QuickControls2
   Widgets

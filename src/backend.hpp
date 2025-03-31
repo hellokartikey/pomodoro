@@ -10,6 +10,7 @@
 #include <QTimer>
 
 #include "config.hpp"
+#include "notification.hpp"
 
 using namespace std::literals;
 
@@ -118,10 +119,6 @@ class Backend : public QObject {
   [[nodiscard]] int breakMin() const;
   [[nodiscard]] int breakSec() const;
 
-  [[nodiscard]] std::tuple<QString, QString> toBreakText() const;
-  [[nodiscard]] std::tuple<QString, QString> toWorkText() const;
-  [[nodiscard]] std::tuple<QString, QString, QString> notificationText() const;
-
   void notify();
 
  private:
@@ -137,7 +134,9 @@ class Backend : public QObject {
   chrono::seconds m_work_time{};
   chrono::seconds m_break_time{};
 
-  Config m_config;
+  Notification m_notification{this};
+
+  Config m_config{this};
 };
 
 #endif
