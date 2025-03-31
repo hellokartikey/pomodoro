@@ -55,12 +55,9 @@ include(KDEClangFormat)
 include(KDEGitCommitHooks)
 include(ECMSetupVersion)
 
-file(GLOB RECURSE CLANG_FORMAT_SOURCE_FILES *.cpp *.hpp)
+file(GLOB_RECURSE CLANG_FORMAT_SOURCE_FILES src/*.cpp src/*.hpp)
 kde_clang_format(${CLANG_FORMAT_SOURCE_FILES})
 kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
-
-include(CMakePrintHelpers)
-cmake_print_variables(ECM_GLOBAL_FIND_VERSION)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
