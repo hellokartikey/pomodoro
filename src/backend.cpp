@@ -46,6 +46,7 @@ void Backend::switchMode() {
       UNREACHABLE();
   }
 
+  pause();
   notify();
 }
 
@@ -162,6 +163,7 @@ void Backend::tick() {
 
   if (time() <= 0s) {
     switchMode();
+    return;
   }
 
   time()--;
@@ -306,6 +308,9 @@ void Backend::notify() {
 
   notification->setTitle(title);
   notification->setText(text);
+
+  auto* action = notification->addAction(u"Continue"_s);
+  connect(action, &KNotificationAction::activated, this, &Backend::start);
 
   notification->sendEvent();
 
