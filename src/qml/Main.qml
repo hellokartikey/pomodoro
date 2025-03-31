@@ -10,14 +10,11 @@ import Pomodoro
 Kirigami.ApplicationWindow {
   id: root
 
-  height: 400
-  width: 400
+  height: 350
+  width: 350
 
-  minimumHeight: 400
-  minimumWidth: 400
-
-  maximumWidth: minimumWidth
-  maximumHeight: minimumHeight
+  minimumHeight: 250
+  minimumWidth: 350
 
   visible: true
 
