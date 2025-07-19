@@ -1,7 +1,9 @@
 #include <QApplication>
+#include <QIcon>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickStyle>
+#include <QStyleFactory>
 
 #include <KLocalizedContext>
 
@@ -17,7 +19,9 @@ int main(int argc, char* argv[]) {
 
   // Set default style if enviroment variable override is not set
   if (qEnvironmentVariableIsEmpty("QT_QUICK_CONTROLS_STYLE")) {
+    QApplication::setStyle(u"Breeze"_s);
     QQuickStyle::setStyle(u"org.kde.desktop"_s);
+    QIcon::setThemeName(u"breeze"_s);
   }
 
   qml.rootContext()->setContextObject(new KLocalizedContext(&qml));

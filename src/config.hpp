@@ -19,6 +19,7 @@ class Config : public QObject {
 
   Q_PROPERTY(QAbstractItemModel* colorSchemes READ colorSchemes CONSTANT)
 
+  Q_PROPERTY(QString colorSchemeName READ colorSchemeName NOTIFY sigColorScheme)
   Q_PROPERTY(int colorScheme READ colorScheme NOTIFY sigColorScheme)
 
   Q_PROPERTY(KAboutData aboutData READ aboutData CONSTANT)
@@ -29,6 +30,7 @@ class Config : public QObject {
   [[nodiscard]] QAbstractItemModel* colorSchemes() const;
 
   [[nodiscard]] int colorScheme() const;
+  [[nodiscard]] QString colorSchemeName() const;
   Q_INVOKABLE void setColorScheme(int idx);
   Q_SIGNAL void sigColorScheme();
 

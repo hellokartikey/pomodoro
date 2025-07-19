@@ -16,8 +16,6 @@ Config::Config(QObject* parent)
       m_color(KColorSchemeManager::instance()),
       m_general_config(&m_config, u"General"_s) {
   initAboutData();
-
-  qDebug() << m_color->activeSchemeName();
 }
 
 chrono::seconds Config::workTime() {
@@ -53,7 +51,11 @@ QAbstractItemModel* Config::colorSchemes() const {
 }
 
 int Config::colorScheme() const {
-  return m_color->indexForScheme(m_color->activeSchemeName()).row();
+  return m_color->indexForScheme(colorSchemeName()).row();
+}
+
+QString Config::colorSchemeName() const {
+  return m_color->activeSchemeName();
 }
 
 void Config::setColorScheme(int idx) {
