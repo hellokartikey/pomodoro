@@ -1,7 +1,7 @@
 #include "backend.hpp"
 
 #include <chrono>
-#include <print>
+#include <format>
 
 #include <libassert/assert.hpp>
 
@@ -14,6 +14,8 @@ Backend::Backend(QObject* parent)
   connect(&timer(), &QTimer::timeout, this, &Backend::tick);
   connect(this, &Backend::sigWorkTime, this, &Backend::resetWork);
   connect(this, &Backend::sigBreakTime, this, &Backend::resetBreak);
+
+  connect(this, &Backend::sigPaused, &m_notification, &Notification::clear);
 
   setWorkTime(m_config.workTime());
   setBreakTime(m_config.breakTime());

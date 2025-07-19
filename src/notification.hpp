@@ -13,6 +13,8 @@ class Notification : public QObject {
  public:
   Notification(QObject* parent = nullptr);
 
+  void clear();
+
   void notifyWork();
   void notifyBreak();
 

@@ -34,7 +34,7 @@ class Config : public QObject {
   Q_INVOKABLE void setColorScheme(int idx);
   Q_SIGNAL void sigColorScheme();
 
-  KAboutData aboutData() const;
+  [[nodiscard]] KAboutData aboutData() const;
 
   [[nodiscard]] chrono::seconds workTime();
   void setWorkTime(int min, int sec);

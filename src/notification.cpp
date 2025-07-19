@@ -29,6 +29,10 @@ Notification::Notification(QObject* parent)
           qobject_cast<Backend*>(parent), &Backend::start);
 }
 
+void Notification::clear() {
+  m_notification->close();
+}
+
 void Notification::start() {
   m_start->setAudioOutput(m_audio);
   m_start->play();
