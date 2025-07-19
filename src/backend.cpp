@@ -158,7 +158,7 @@ void Backend::tick() {
     return;
   }
 
-  if (time() <= 0s) {
+  if (time() <= 1s) {
     switchMode();
     return;
   }
