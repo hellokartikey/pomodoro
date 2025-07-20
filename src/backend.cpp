@@ -7,6 +7,7 @@
 
 #include "common.hpp"
 #include "config.hpp"
+#include "notification.hpp"
 
 using namespace Qt::StringLiterals;
 
@@ -14,14 +15,11 @@ Backend::Backend(QObject* parent)
     : QObject(parent) {
   Config::the();  // Initialize config
 
-  connect(this, &Backend::sigWorkTime, this, &Backend::resetWork);
-  connect(this, &Backend::sigBreakTime, this, &Backend::resetBreak);
-
-  setWorkTime(Config::the()->workTime());
-  setBreakTime(Config::the()->breakTime());
+  connect(Config::the(), &Config::workMinChanged, this, &Backend::resetWork);
+  connect(Config::the(), &Config::breakMinChanged, this, &Backend::resetBreak);
 
   setPaused(true);
-  setTime(workTime());
+  setTime(Config::the()->workTime());
 
   timer()->start(TIMER_INTERVAL);
 }
@@ -35,12 +33,6 @@ Backend* Backend::create(QQmlEngine*, QJSEngine*) {
   auto* ptr = the();
   QJSEngine::setObjectOwnership(ptr, QJSEngine::CppOwnership);
   return ptr;
-}
-
-void Backend::reset() {
-  setLap(INITIAL_LAP);
-  pause();
-  forceMode(Work);
 }
 
 void Backend::switchMode() {
@@ -67,7 +59,7 @@ int Backend::lap() const {
 void Backend::setLap(int value) {
   if (lap() != value) {
     m_lap = value;
-    Q_EMIT sigLap();
+    Q_EMIT lapChanged();
   }
 }
 
@@ -79,49 +71,44 @@ Backend::Mode Backend::mode() const {
   return m_mode;
 }
 
-QString Backend::modeStr() const {
-  switch (mode()) {
-    case Work:
-      return u"Work"_s;
-    case Break:
-      return u"Break"_s;
-    default:
-      UNREACHABLE();
-  }
-}
-
 void Backend::setMode(Mode value) {
-  if (mode() != value) {
-    forceMode(value);
+  if (mode() == value) {
+    return;
   }
+
+  forceMode(value);
 }
 
 void Backend::forceMode(Mode value) {
   switch (value) {
     case Work:
-      setTime(workTime());
+      setTime(Config::the()->workTime());
       break;
     case Break:
-      setTime(breakTime());
+      setTime(Config::the()->breakTime());
       break;
     default:
       UNREACHABLE();
   }
 
   m_mode = value;
-  Q_EMIT sigMode();
+  Q_EMIT modeChanged();
 }
 
 void Backend::resetWork() {
-  if (mode() == Work) {
-    forceMode(Work);
+  if (mode() != Work) {
+    return;
   }
+
+  forceMode(Work);
 }
 
 void Backend::resetBreak() {
-  if (mode() == Break) {
-    forceMode(Break);
+  if (mode() != Break) {
+    return;
   }
+
+  forceMode(Break);
 }
 
 bool Backend::isPaused() const {
@@ -141,7 +128,13 @@ void Backend::setPaused(bool value) {
     connect(timer(), &QTimer::timeout, this, &Backend::tick);
   }
 
-  Q_EMIT sigPaused();
+  Q_EMIT pausedChanged();
+}
+
+void Backend::reset() {
+  setLap(INITIAL_LAP);
+  pause();
+  forceMode(Work);
 }
 
 void Backend::pause() {
@@ -161,30 +154,29 @@ QTimer* Backend::timer() {
   return &m_timer;
 }
 
-chrono::seconds& Backend::time() {
+chrono::seconds Backend::time() const {
   return m_remaining;
 }
 
-const chrono::seconds& Backend::time() const {
-  return m_remaining;
+QString Backend::timeStr() const {
+  return QString::fromStdString(std::format("{:02}:{:02}",
+                                            as<chrono::minutes>(time()).count(),
+                                            time().count() % MINUTE));
 }
 
-chrono::seconds& Backend::target() {
-  return m_target;
-}
-
-const chrono::seconds& Backend::target() const {
+chrono::seconds Backend::target() const {
   return m_target;
 }
 
 void Backend::setTime(const chrono::seconds& value) {
-  if (time() != value) {
-    time() = value;
-    target() = value;
-
-    Q_EMIT sigMin();
-    Q_EMIT sigSec();
+  if (time() == value) {
+    return;
   }
+
+  m_remaining = value;
+  m_target = value;
+
+  Q_EMIT ticked();
 }
 
 void Backend::tick() {
@@ -193,26 +185,8 @@ void Backend::tick() {
     return;
   }
 
-  time()--;
-  Q_EMIT sigSec();
-
-  if (time() % MINUTE == 0s) {
-    Q_EMIT sigMin();
-  }
-}
-
-QString Backend::timeStr() const {
-  static const auto fmt = u"%1:%2"_s;
-  return fmt.arg(min(), sec());
-}
-
-QString Backend::min() const {
-  return QString::fromStdString(
-      std::format("{:02}", as<chrono::minutes>(time()).count()));
-}
-
-QString Backend::sec() const {
-  return QString::fromStdString(std::format("{:02}", time().count() % MINUTE));
+  m_remaining--;
+  Q_EMIT ticked();
 }
 
 float Backend::progressBar() const {
@@ -223,67 +197,7 @@ float Backend::progressBar() const {
   return numerator / denominator;
 }
 
-const chrono::seconds& Backend::workTime() const {
-  return m_work_time;
-}
-
-void Backend::setWorkTime(const chrono::seconds& value) {
-  if (workTime() != value) {
-    m_work_time = value;
-    Q_EMIT sigWorkTime();
-  }
-}
-
-void Backend::setWorkTime(int min, int sec) {
-  if (min == 0 and sec == 0) {
-    sec = 1;
-  }
-
-  Config::the()->setWorkTime(min, sec);
-
-  auto time = as<chrono::seconds>(chrono::minutes{min}) + chrono::seconds{sec};
-  setWorkTime(time);
-}
-
-int Backend::workMin() const {
-  return as<chrono::minutes>(workTime()).count();
-}
-
-int Backend::workSec() const {
-  return workTime().count() % MINUTE;
-}
-
-const chrono::seconds& Backend::breakTime() const {
-  return m_break_time;
-}
-
-void Backend::setBreakTime(const chrono::seconds& value) {
-  if (breakTime() != value) {
-    m_break_time = value;
-    Q_EMIT sigBreakTime();
-  }
-}
-
-void Backend::setBreakTime(int min, int sec) {
-  if (min == 0 and sec == 0) {
-    sec = 1;
-  }
-
-  Config::the()->setBreakTime(min, sec);
-
-  auto time = as<chrono::seconds>(chrono::minutes{min}) + chrono::seconds{sec};
-  setBreakTime(time);
-}
-
-int Backend::breakMin() const {
-  return as<chrono::minutes>(breakTime()).count();
-}
-
-int Backend::breakSec() const {
-  return breakTime().count() % MINUTE;
-}
-
-void Backend::notify() {
+void Backend::notify() const {
   switch (mode()) {
     case Break:
       Notify::the()->notifyBreak();

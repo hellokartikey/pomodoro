@@ -39,7 +39,7 @@ Kirigami.Page {
     Text {
       anchors.horizontalCenter: parent.horizontalCenter
 
-      text: `${Backend.min}:${Backend.sec}`
+      text: Backend.timeStr
       color: Kirigami.Theme.textColor
 
       font.pointSize: Kirigami.Theme.defaultFont.pointSize * 4

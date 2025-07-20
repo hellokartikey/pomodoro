@@ -26,29 +26,46 @@ Config* Config::create(QQmlEngine*, QJSEngine*) {
 }
 
 chrono::seconds Config::workTime() {
-  int workMin = m_general.readEntry(WORK_MIN_CONF, WORK_MIN_DEFAULT);
-  int workSec = m_general.readEntry(WORK_SEC_CONF, WORK_SEC_DEFAULT);
-
-  return chrono::minutes{workMin} + chrono::seconds{workSec};
+  return chrono::minutes{workMin()};
 }
 
-void Config::setWorkTime(int min, int sec) {
+int Config::workMin() {
+  return m_general.readEntry(WORK_MIN_CONF, WORK_MIN_DEFAULT);
+}
+
+void Config::setWorkMin(int min) {
+  if (min == workMin()) {
+    return;
+  }
+
+  if (min == 0) {
+    min = 1;
+  }
+
   m_general.writeEntry(WORK_MIN_CONF, min);
-  m_general.writeEntry(WORK_SEC_CONF, sec);
+  Q_EMIT workMinChanged();
 }
 
 chrono::seconds Config::breakTime() {
-  int breakMin = m_general.readEntry(BREAK_MIN_CONF, BREAK_MIN_DEFAULT);
-  int breakSec = m_general.readEntry(BREAK_SEC_CONF, BREAK_SEC_DEFAULT);
-
-  return chrono::minutes{breakMin} + chrono::seconds{breakSec};
+  return chrono::minutes{breakMin()};
 }
 
-void Config::setBreakTime(int min, int sec) {
+int Config::breakMin() {
+  return m_general.readEntry(BREAK_MIN_CONF, BREAK_MIN_DEFAULT);
+}
+
+void Config::setBreakMin(int min) {
+  if (min == breakMin()) {
+    return;
+  }
+
+  if (min == 0) {
+    min = 1;
+  }
+
   m_general.writeEntry(BREAK_MIN_CONF, min);
-  m_general.writeEntry(BREAK_SEC_CONF, sec);
+  Q_EMIT breakMinChanged();
 }
-
 KAboutData Config::aboutData() const {
   return KAboutData::applicationData();
 }
@@ -65,7 +82,7 @@ QString Config::colorScheme() const {
   return m_color->activeSchemeName();
 }
 
-void Config::setColorScheme(int idx) {
+void Config::setColorSchemeId(int idx) {
   if (idx == colorSchemeId()) {
     return;
   }
