@@ -31,10 +31,8 @@ Notify::Notify(QObject* parent)
   m_notification->setAutoDelete(false);
 
   auto* skip = m_notification->addAction(u"Skip"_s);
-  connect(skip, &KNotificationAction::activated, [] {
-    Backend::the()->skip();
-    Backend::the()->start();
-  });
+  connect(skip, &KNotificationAction::activated, Backend::the(),
+          &Backend::skip);
 
   auto* start = m_notification->addAction(u"Continue"_s);
   connect(start, &KNotificationAction::activated, Backend::the(),
@@ -64,6 +62,7 @@ void Notify::notify(QString title, QString text) {
   m_notification->setTitle(title);
   m_notification->setText(text);
 
+  endSound();
   m_notification->sendEvent();
 }
 
@@ -85,8 +84,6 @@ void Notify::notifyBreak() {
       MESSAGES[QRandomGenerator::global()->bounded(MESSAGES.size())];
 
   notify(title, text);
-
-  endSound();
 }
 
 void Notify::notifyWork() {
@@ -107,8 +104,6 @@ void Notify::notifyWork() {
       MESSAGES[QRandomGenerator::global()->bounded(MESSAGES.size())];
 
   notify(title, text);
-
-  endSound();
 }
 
 #include "moc_notification.cpp"

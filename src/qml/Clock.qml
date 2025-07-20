@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Layouts
 
 import org.kde.kirigami as Kirigami
+import org.kde.kirigamiaddons.formcard as Addons
 
 import Pomodoro
 
@@ -16,20 +16,42 @@ Kirigami.Page {
       icon.name: "application-menu-symbolic"
 
       Kirigami.Action {
+        text: "Reset"
+        icon.name: "view-refresh-symbolic"
+        onTriggered: Backend.reset()
+      }
+
+      Kirigami.Action {
+        separator: true
+      }
+
+      Kirigami.Action {
         text: "Settings"
         icon.name: "settings-configure-symbolic"
-
-        onTriggered: { pageStack.layers.push(settingsPage) }
+        onTriggered: { applicationWindow().pageStack.layers.push(settingsPage) }
       }
 
       Kirigami.Action {
         text: "About"
         icon.name: "help-about-symbolic"
-
-        onTriggered: { pageStack.layers.push(aboutPage) }
+        onTriggered: { applicationWindow().pageStack.layers.push(aboutPage) }
       }
     }
   ]
+
+  Component {
+    id: settingsPage
+
+    Settings {}
+  }
+
+  Component {
+    id: aboutPage
+
+    Addons.AboutPage {
+      aboutData: Config.aboutData
+    }
+  }
 
   Column {
     anchors.centerIn: parent
@@ -76,14 +98,6 @@ Kirigami.Page {
         visible: ! Backend.isPaused
 
         onClicked: { Backend.pause() }
-      }
-
-      Button {
-        text: "Reset"
-        icon.name: "view-refresh-symbolic"
-        display: AbstractButton.IconOnly
-
-        onClicked: { Backend.reset() }
       }
 
       Button {
