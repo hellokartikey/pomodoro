@@ -9,8 +9,8 @@
 
 #include <KAboutData>
 #include <KColorSchemeManager>
-#include <KConfig>
 #include <KConfigGroup>
+#include <KSharedConfig>
 
 namespace chrono = std::chrono;
 
@@ -20,8 +20,8 @@ class Config : public QObject {
   QML_SINGLETON
 
   Q_PROPERTY(QAbstractItemModel* colorSchemes READ colorSchemes CONSTANT)
-  Q_PROPERTY(QString colorSchemeName READ colorSchemeName NOTIFY sigColorScheme)
-  Q_PROPERTY(int colorScheme READ colorScheme NOTIFY sigColorScheme)
+  Q_PROPERTY(QString colorScheme READ colorScheme NOTIFY colorSchemeChanged)
+  Q_PROPERTY(int colorSchemeId READ colorSchemeId NOTIFY colorSchemeChanged)
 
   Q_PROPERTY(KAboutData aboutData READ aboutData CONSTANT)
 
@@ -30,6 +30,12 @@ class Config : public QObject {
   static constexpr auto BREAK_MIN_CONF = "breakMin";
   static constexpr auto BREAK_SEC_CONF = "breakSec";
 
+  static constexpr auto BREAK_MIN_DEFAULT = 5;
+  static constexpr auto BREAK_SEC_DEFAULT = 0;
+
+  static constexpr auto WORK_MIN_DEFAULT = 25;
+  static constexpr auto WORK_SEC_DEFAULT = 0;
+
   explicit Config(QObject* parent = nullptr);
 
  public:
@@ -37,11 +43,10 @@ class Config : public QObject {
   static Config* create(QQmlEngine*, QJSEngine*);
 
   [[nodiscard]] QAbstractItemModel* colorSchemes() const;
-
-  [[nodiscard]] int colorScheme() const;
-  [[nodiscard]] QString colorSchemeName() const;
+  [[nodiscard]] int colorSchemeId() const;
+  [[nodiscard]] QString colorScheme() const;
   Q_INVOKABLE void setColorScheme(int idx);
-  Q_SIGNAL void sigColorScheme();
+  Q_SIGNAL void colorSchemeChanged();
 
   [[nodiscard]] KAboutData aboutData() const;
 
@@ -54,8 +59,8 @@ class Config : public QObject {
  private:
   KColorSchemeManager* m_color;
 
-  KConfig m_config;
-  KConfigGroup m_general_config;
+  KSharedConfig::Ptr m_config;
+  KConfigGroup m_general;
 };
 
 #endif
