@@ -2,14 +2,14 @@
 #define HK_POMODORO_BACKEND_HPP
 
 #include <cstdint>
-#include <tuple>
 
 #include <QtQml/qqmlregistration.h>
+#include <QJSEngine>
 #include <QObject>
+#include <QQmlEngine>
 #include <QString>
 #include <QTimer>
 
-#include "config.hpp"
 #include "notification.hpp"
 
 using namespace std::literals;
@@ -55,9 +55,11 @@ class Backend : public QObject {
 
   Q_PROPERTY(float progressBar READ progressBar NOTIFY sigSec)
 
- public:
   explicit Backend(QObject* parent = nullptr);
-  ~Backend() override = default;
+
+ public:
+  static Backend* the();
+  static Backend* create(QQmlEngine*, QJSEngine*);
 
   Q_INVOKABLE void reset();
 
@@ -135,8 +137,6 @@ class Backend : public QObject {
   chrono::seconds m_break_time{};
 
   Notification m_notification{this};
-
-  Config m_config{this};
 };
 
 #endif

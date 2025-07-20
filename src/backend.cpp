@@ -11,18 +11,31 @@ using namespace Qt::StringLiterals;
 
 Backend::Backend(QObject* parent)
     : QObject(parent) {
+  Config::the();  // Initialize config
+
   connect(&timer(), &QTimer::timeout, this, &Backend::tick);
   connect(this, &Backend::sigWorkTime, this, &Backend::resetWork);
   connect(this, &Backend::sigBreakTime, this, &Backend::resetBreak);
 
   connect(this, &Backend::sigPaused, &m_notification, &Notification::clear);
 
-  setWorkTime(m_config.workTime());
-  setBreakTime(m_config.breakTime());
+  setWorkTime(Config::the()->workTime());
+  setBreakTime(Config::the()->breakTime());
 
   setTime(workTime());
 
   timer().start(TIMER_INTERVAL);
+}
+
+Backend* Backend::the() {
+  static auto inst = Backend{};
+  return &inst;
+}
+
+Backend* Backend::create(QQmlEngine*, QJSEngine*) {
+  auto* ptr = the();
+  QJSEngine::setObjectOwnership(ptr, QJSEngine::CppOwnership);
+  return ptr;
 }
 
 void Backend::reset() {
@@ -206,7 +219,7 @@ void Backend::setWorkTime(int min, int sec) {
     sec = 1;
   }
 
-  m_config.setWorkTime(min, sec);
+  Config::the()->setWorkTime(min, sec);
 
   auto time = as<chrono::seconds>(chrono::minutes{min}) + chrono::seconds{sec};
   setWorkTime(time);
@@ -236,7 +249,7 @@ void Backend::setBreakTime(int min, int sec) {
     sec = 1;
   }
 
-  m_config.setBreakTime(min, sec);
+  Config::the()->setBreakTime(min, sec);
 
   auto time = as<chrono::seconds>(chrono::minutes{min}) + chrono::seconds{sec};
   setBreakTime(time);

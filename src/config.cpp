@@ -19,6 +19,17 @@ Config::Config(QObject* parent)
   initAboutData();
 }
 
+Config* Config::the() {
+  static auto inst = Config{};
+  return &inst;
+}
+
+Config* Config::create(QQmlEngine*, QJSEngine*) {
+  auto* ptr = the();
+  QJSEngine::setObjectOwnership(ptr, QJSEngine::CppOwnership);
+  return ptr;
+}
+
 chrono::seconds Config::workTime() {
   int workMin = m_general_config.readEntry(WORK_MIN_CONF, 25);
   int workSec = m_general_config.readEntry(WORK_SEC_CONF, 0);

@@ -3,7 +3,9 @@
 
 #include <QtQml/qqmlregistration.h>
 #include <QAbstractItemModel>
+#include <QJSEngine>
 #include <QObject>
+#include <QQmlEngine>
 
 #include <KAboutData>
 #include <KColorSchemeManager>
@@ -24,8 +26,11 @@ class Config : public QObject {
 
   Q_PROPERTY(KAboutData aboutData READ aboutData CONSTANT)
 
- public:
   explicit Config(QObject* parent = nullptr);
+
+ public:
+  static Config* the();
+  static Config* create(QQmlEngine*, QJSEngine*);
 
   [[nodiscard]] QAbstractItemModel* colorSchemes() const;
 

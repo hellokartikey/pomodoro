@@ -11,7 +11,7 @@ using namespace Qt::StringLiterals;
 Notification::Notification(QObject* parent)
     : QObject(parent),
       m_notification(
-          new KNotification(u"modeChanged"_s, KNotification::Persistent, this)),
+          new KNotification(u"modeChanged"_s, KNotification::Persistent)),
       m_end(new QMediaPlayer(this)),
       m_start(new QMediaPlayer(this)),
       m_audio(new QAudioOutput(this)) {
