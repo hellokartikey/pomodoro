@@ -30,8 +30,15 @@ Notify::Notify(QObject* parent)
   m_audio->setVolume(50);
   m_notification->setAutoDelete(false);
 
-  auto* action = m_notification->addAction(u"Continue"_s);
-  connect(action, &KNotificationAction::activated, this, &Notify::startAction);
+  auto* skip = m_notification->addAction(u"Skip"_s);
+  connect(skip, &KNotificationAction::activated, [] {
+    Backend::the()->skip();
+    Backend::the()->start();
+  });
+
+  auto* start = m_notification->addAction(u"Continue"_s);
+  connect(start, &KNotificationAction::activated, Backend::the(),
+          &Backend::start);
 }
 
 Notify* Notify::the() {

@@ -23,9 +23,6 @@ class Notify : public QObject {
   void startSound();
   void endSound();
 
- Q_SIGNALS:
-  void startAction();
-
  private:
   void notify(QString title, QString body);
 

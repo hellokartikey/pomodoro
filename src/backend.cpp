@@ -16,7 +16,6 @@ Backend::Backend(QObject* parent)
 
   connect(this, &Backend::sigWorkTime, this, &Backend::resetWork);
   connect(this, &Backend::sigBreakTime, this, &Backend::resetBreak);
-  connect(Notify::the(), &Notify::startAction, this, &Backend::start);
 
   setWorkTime(Config::the()->workTime());
   setBreakTime(Config::the()->breakTime());
