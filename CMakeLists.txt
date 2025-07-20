@@ -54,6 +54,7 @@ include(KDECompilerSettings NO_POLICY_SCOPE)
 include(KDEClangFormat)
 include(KDEGitCommitHooks)
 include(ECMSetupVersion)
+include(ECMQmlModule)
 
 file(GLOB_RECURSE CLANG_FORMAT_SOURCE_FILES src/*.cpp src/*.hpp)
 kde_clang_format(${CLANG_FORMAT_SOURCE_FILES})

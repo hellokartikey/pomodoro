@@ -4,7 +4,7 @@ ecm_setup_version(
   VERSION_HEADER version.hpp
 )
 
-qt_add_executable(${PROJECT_NAME}
+add_executable(pomodoro
   main.cpp
   common.hpp
   backend.hpp
@@ -17,16 +17,16 @@ qt_add_executable(${PROJECT_NAME}
   notification.cpp
 )
 
-qt_add_qml_module(${PROJECT_NAME}
-URI Pomodoro
-VERSION 1.0
-QML_FILES
+ecm_add_qml_module(pomodoro URI Pomodoro)
+
+ecm_target_qml_sources(pomodoro
+SOURCES
   qml/Main.qml
   qml/Clock.qml
   qml/Settings.qml
 )
 
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(pomodoro
 PRIVATE
   Qt6::Core
   Qt6::Quick
@@ -44,4 +44,4 @@ PRIVATE
   libassert::assert
 )
 
-install(TARGETS ${PROJECT_NAME} DESTINATION ${KDE_INSTALL_BINDIR})
+install(TARGETS pomodoro ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
