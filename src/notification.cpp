@@ -1,49 +1,66 @@
 #include "notification.hpp"
-#include <qobject.h>
 
+#include <QDebug>
 #include <QRandomGenerator>
 #include <QStandardPaths>
 
 #include "backend.hpp"
+#include "config.hpp"
+
+#include <libassert/assert.hpp>
 
 using namespace Qt::StringLiterals;
 
-Notification::Notification(QObject* parent)
+Notify::Notify(QObject* parent)
     : QObject(parent),
       m_notification(
           new KNotification(u"modeChanged"_s, KNotification::Persistent)),
       m_end(new QMediaPlayer(this)),
       m_start(new QMediaPlayer(this)),
       m_audio(new QAudioOutput(this)) {
+  using enum QStandardPaths::StandardLocation;
+  using namespace std::literals;
+
   m_start->setSource(QUrl::fromLocalFile(
-      QStandardPaths::locate(QStandardPaths::AppDataLocation, u"start.ogg"_s)));
+      QStandardPaths::locate(AppDataLocation, u"start.ogg"_s)));
 
   m_end->setSource(QUrl::fromLocalFile(
-      QStandardPaths::locate(QStandardPaths::AppDataLocation, u"end.ogg"_s)));
+      QStandardPaths::locate(AppDataLocation, u"end.ogg"_s)));
 
   m_audio->setVolume(50);
-
   m_notification->setAutoDelete(false);
+
   auto* action = m_notification->addAction(u"Continue"_s);
-  connect(action, &KNotificationAction::activated,
-          qobject_cast<Backend*>(parent), &Backend::start);
+  connect(action, &KNotificationAction::activated, this, &Notify::startAction);
 }
 
-void Notification::clear() {
+Notify* Notify::the() {
+  static auto inst = Notify{};
+  return &inst;
+}
+
+void Notify::clear() {
   m_notification->close();
 }
 
-void Notification::start() {
+void Notify::startSound() {
   m_start->setAudioOutput(m_audio);
   m_start->play();
 }
 
-void Notification::end() {
+void Notify::endSound() {
   m_end->setAudioOutput(m_audio);
   m_end->play();
 }
 
-void Notification::notifyBreak() {
+void Notify::notify(QString title, QString text) {
+  m_notification->setTitle(title);
+  m_notification->setText(text);
+
+  m_notification->sendEvent();
+}
+
+void Notify::notifyBreak() {
   static const QList<std::pair<QString, QString>> MESSAGES = {
       {u"Stretch and Refresh"_s,
        u"It's time to stretch, drink some water, and take a short walk to clear your mind."_s},
@@ -60,15 +77,12 @@ void Notification::notifyBreak() {
   auto [title, text] =
       MESSAGES[QRandomGenerator::global()->bounded(MESSAGES.size())];
 
-  m_notification->setTitle(title);
-  m_notification->setText(text);
+  notify(title, text);
 
-  m_notification->sendEvent();
-
-  end();
+  endSound();
 }
 
-void Notification::notifyWork() {
+void Notify::notifyWork() {
   static const QList<std::pair<QString, QString>> MESSAGES = {
       {u"Time to Refocus"_s,
        u"Your break is over—let’s dive back into your work and keep making progress."_s},
@@ -85,12 +99,9 @@ void Notification::notifyWork() {
   auto [title, text] =
       MESSAGES[QRandomGenerator::global()->bounded(MESSAGES.size())];
 
-  m_notification->setTitle(title);
-  m_notification->setText(text);
+  notify(title, text);
 
-  m_notification->sendEvent();
-
-  end();
+  endSound();
 }
 
 #include "moc_notification.cpp"

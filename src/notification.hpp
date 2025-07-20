@@ -7,21 +7,28 @@
 
 #include <KNotification>
 
-class Notification : public QObject {
+class Notify : public QObject {
   Q_OBJECT
 
+  Notify(QObject* parent = nullptr);
+
  public:
-  Notification(QObject* parent = nullptr);
+  static Notify* the();
 
   void clear();
 
   void notifyWork();
   void notifyBreak();
 
-  void start();
-  void end();
+  void startSound();
+  void endSound();
+
+ Q_SIGNALS:
+  void startAction();
 
  private:
+  void notify(QString title, QString body);
+
   KNotification* m_notification;
   QMediaPlayer* m_end;
   QMediaPlayer* m_start;

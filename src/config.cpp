@@ -6,12 +6,6 @@
 
 using namespace Qt::StringLiterals;
 
-constexpr auto WORK_MIN_CONF = "workMin";
-constexpr auto WORK_SEC_CONF = "workSec";
-constexpr auto BREAK_MIN_CONF = "breakMin";
-constexpr auto BREAK_SEC_CONF = "breakSec";
-constexpr auto TIMER_NOTIFY = "timerNotify";
-
 Config::Config(QObject* parent)
     : QObject(parent),
       m_color(KColorSchemeManager::instance()),
@@ -76,3 +70,5 @@ void Config::setColorScheme(int idx) {
     Q_EMIT sigColorScheme();
   }
 }
+
+#include "moc_config.cpp"

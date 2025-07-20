@@ -20,11 +20,15 @@ class Config : public QObject {
   QML_SINGLETON
 
   Q_PROPERTY(QAbstractItemModel* colorSchemes READ colorSchemes CONSTANT)
-
   Q_PROPERTY(QString colorSchemeName READ colorSchemeName NOTIFY sigColorScheme)
   Q_PROPERTY(int colorScheme READ colorScheme NOTIFY sigColorScheme)
 
   Q_PROPERTY(KAboutData aboutData READ aboutData CONSTANT)
+
+  static constexpr auto WORK_MIN_CONF = "workMin";
+  static constexpr auto WORK_SEC_CONF = "workSec";
+  static constexpr auto BREAK_MIN_CONF = "breakMin";
+  static constexpr auto BREAK_SEC_CONF = "breakSec";
 
   explicit Config(QObject* parent = nullptr);
 

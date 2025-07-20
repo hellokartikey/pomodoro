@@ -6,6 +6,7 @@
 #include <libassert/assert.hpp>
 
 #include "common.hpp"
+#include "config.hpp"
 
 using namespace Qt::StringLiterals;
 
@@ -13,18 +14,17 @@ Backend::Backend(QObject* parent)
     : QObject(parent) {
   Config::the();  // Initialize config
 
-  connect(&timer(), &QTimer::timeout, this, &Backend::tick);
   connect(this, &Backend::sigWorkTime, this, &Backend::resetWork);
   connect(this, &Backend::sigBreakTime, this, &Backend::resetBreak);
-
-  connect(this, &Backend::sigPaused, &m_notification, &Notification::clear);
+  connect(Notify::the(), &Notify::startAction, this, &Backend::start);
 
   setWorkTime(Config::the()->workTime());
   setBreakTime(Config::the()->breakTime());
 
+  setPaused(true);
   setTime(workTime());
 
-  timer().start(TIMER_INTERVAL);
+  timer()->start(TIMER_INTERVAL);
 }
 
 Backend* Backend::the() {
@@ -80,6 +80,17 @@ Backend::Mode Backend::mode() const {
   return m_mode;
 }
 
+QString Backend::modeStr() const {
+  switch (mode()) {
+    case Work:
+      return u"Work"_s;
+    case Break:
+      return u"Break"_s;
+    default:
+      UNREACHABLE();
+  }
+}
+
 void Backend::setMode(Mode value) {
   if (mode() != value) {
     forceMode(value);
@@ -119,10 +130,19 @@ bool Backend::isPaused() const {
 }
 
 void Backend::setPaused(bool value) {
-  if (isPaused() != value) {
-    m_is_paused = value;
-    Q_EMIT sigPaused();
+  if (isPaused() == value) {
+    return;
   }
+
+  m_is_paused = value;
+
+  if (value) {
+    disconnect(timer(), &QTimer::timeout, this, &Backend::tick);
+  } else {
+    connect(timer(), &QTimer::timeout, this, &Backend::tick);
+  }
+
+  Q_EMIT sigPaused();
 }
 
 void Backend::pause() {
@@ -130,7 +150,7 @@ void Backend::pause() {
 }
 
 void Backend::start() {
-  m_notification.start();
+  Notify::the()->startSound();
   setPaused(false);
 }
 
@@ -138,8 +158,8 @@ void Backend::skip() {
   switchMode();
 }
 
-QTimer& Backend::timer() {
-  return m_timer;
+QTimer* Backend::timer() {
+  return &m_timer;
 }
 
 chrono::seconds& Backend::time() {
@@ -169,10 +189,6 @@ void Backend::setTime(const chrono::seconds& value) {
 }
 
 void Backend::tick() {
-  if (isPaused()) {
-    return;
-  }
-
   if (time() <= 1s) {
     switchMode();
     return;
@@ -184,6 +200,11 @@ void Backend::tick() {
   if (time() % MINUTE == 0s) {
     Q_EMIT sigMin();
   }
+}
+
+QString Backend::timeStr() const {
+  static const auto fmt = u"%1:%2"_s;
+  return fmt.arg(min(), sec());
 }
 
 QString Backend::min() const {
@@ -266,10 +287,10 @@ int Backend::breakSec() const {
 void Backend::notify() {
   switch (mode()) {
     case Break:
-      m_notification.notifyBreak();
+      Notify::the()->notifyBreak();
       break;
     case Work:
-      m_notification.notifyWork();
+      Notify::the()->notifyWork();
       break;
     default:
       UNREACHABLE();

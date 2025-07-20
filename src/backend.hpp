@@ -38,6 +38,7 @@ class Backend : public QObject {
   Q_PROPERTY(int lap READ lap NOTIFY sigLap)
 
   Q_PROPERTY(Mode mode READ mode WRITE setMode NOTIFY sigMode)
+  Q_PROPERTY(QString modeStr READ modeStr NOTIFY sigMode)
 
   Q_PROPERTY(bool isPaused READ isPaused NOTIFY sigPaused)
 
@@ -70,6 +71,7 @@ class Backend : public QObject {
   void incLap();
 
   [[nodiscard]] Mode mode() const;
+  [[nodiscard]] QString modeStr() const;
   void setMode(Mode value);
   void forceMode(Mode value);
   void resetWork();
@@ -86,7 +88,7 @@ class Backend : public QObject {
   Q_INVOKABLE void start();
   Q_INVOKABLE void skip();
 
-  QTimer& timer();
+  QTimer* timer();
 
   chrono::seconds& time();
   [[nodiscard]] const chrono::seconds& time() const;
@@ -98,6 +100,8 @@ class Backend : public QObject {
   void setTime(const chrono::seconds& value);
 
   void tick();
+
+  [[nodiscard]] QString timeStr() const;
 
   [[nodiscard]] QString min() const;
   Q_SIGNAL void sigMin();
@@ -135,8 +139,6 @@ class Backend : public QObject {
 
   chrono::seconds m_work_time{};
   chrono::seconds m_break_time{};
-
-  Notification m_notification{this};
 };
 
 #endif

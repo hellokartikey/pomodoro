@@ -5,12 +5,7 @@ project(pomodoro
   VERSION 0.1.0
 )
 
-option(CLANG_FORMAT "Use clang-format to format source files" ON)
 option(UBSAN "Enable undefined behaviour sanitizer" ON)
-
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(ECM "6.0" REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -55,6 +50,11 @@ include(KDEClangFormat)
 include(KDEGitCommitHooks)
 include(ECMSetupVersion)
 include(ECMQmlModule)
+
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(QT_QML_GENERATE_QMLLS_INI ON)
 
 file(GLOB_RECURSE CLANG_FORMAT_SOURCE_FILES src/*.cpp src/*.hpp)
 kde_clang_format(${CLANG_FORMAT_SOURCE_FILES})
