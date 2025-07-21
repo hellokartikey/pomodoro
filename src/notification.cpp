@@ -62,7 +62,6 @@ void Notify::notify(QString title, QString text) {
   m_notification->setTitle(title);
   m_notification->setText(text);
 
-  endSound();
   m_notification->sendEvent();
 }
 

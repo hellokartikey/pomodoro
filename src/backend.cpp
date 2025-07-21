@@ -48,6 +48,7 @@ void Backend::switchMode() {
       UNREACHABLE();
   }
 
+  Notify::the()->endSound();
   pause();
   notify();
 }
@@ -185,6 +186,8 @@ void Backend::tick() {
     switchMode();
     return;
   }
+
+  Notify::the()->clear();
 
   m_remaining--;
   Q_EMIT ticked();
