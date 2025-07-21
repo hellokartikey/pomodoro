@@ -8,18 +8,20 @@ using namespace Qt::StringLiterals;
 
 void initAboutData() {
   auto about = KAboutData();
-  about.setBugAddress("");
-  about.setComponentName(u"pomodoro"_s);
-  about.setCopyrightStatement(u"© 2025 Kartikey Subramanium"_s);
-  about.setDesktopFileName(u"com.github.hellokartikey.pomodoro"_s);
+
   about.setDisplayName(u"Pomodoro"_s);
-  about.setHomepage(u"https://github.com/hellokartikey/pomodoro"_s);
-  about.setLicense(KAboutLicense::GPL_V3);
-  about.setOrganizationDomain("github.com/hellokartikey");
+  about.setComponentName(u"pomodoro"_s);
   about.setShortDescription(u"A minimal pomodoro timer"_s);
+  about.setDesktopFileName(u"com.github.hellokartikey.pomodoro"_s);
   about.setVersion(POMODORO_VERSION_STRING);
 
-  about.addAuthor(u"hellokartikey"_s, u""_s, u""_s,
+  about.setOrganizationDomain("github.com/hellokartikey");
+  about.setHomepage(u"https://github.com/hellokartikey/pomodoro"_s);
+  about.setBugAddress("https://github.com/hellokartikey/pomodoro/issues");
+  about.setCopyrightStatement(u"© 2025 Kartikey Subramanium"_s);
+  about.setLicense(KAboutLicense::GPL_V3);
+
+  about.addAuthor(u"Kartikey Subramanium"_s, u"Author"_s, u""_s,
                   u"https://github.com/hellokartikey"_s);
 
   KAboutData::setApplicationData(about);

@@ -1,5 +1,5 @@
-set(DESKTOP_FILE com.github.hellokartikey.${PROJECT_NAME}.desktop)
-set(NOTIFY_FILE ${PROJECT_NAME}.notifyrc)
+set(DESKTOP_FILE io.github.hellokartikey.pomodoro.desktop)
+set(NOTIFY_FILE pomodoro.notifyrc)
 
 install(FILES ${DESKTOP_FILE} DESTINATION ${KDE_INSTALL_APPDIR})
 install(FILES ${NOTIFY_FILE} DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR})
