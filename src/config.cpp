@@ -91,4 +91,17 @@ void Config::setColorSchemeId(int idx) {
   Q_EMIT colorSchemeChanged();
 }
 
+bool Config::skipStart() {
+  return m_general.readEntry(SKIP_START_CONF, SKIP_START_DEFAULT);
+}
+
+void Config::setSkipStart(bool value) {
+  if (value == skipStart()) {
+    return;
+  }
+
+  m_general.writeEntry(SKIP_START_CONF, value);
+  Q_EMIT skipStartChanged();
+}
+
 #include "moc_config.cpp"

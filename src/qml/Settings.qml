@@ -23,6 +23,12 @@ Addons.FormCardPage {
       currentIndex: Config.colorSchemeId
       onCurrentValueChanged: Config.colorSchemeId = currentIndex
     }
+
+    Addons.FormSwitchDelegate {
+      text: "Start timer after skip"
+      checked: Config.skipStart
+      onCheckedChanged: Config.skipStart = checked
+    }
   }
 
   Addons.FormHeader {

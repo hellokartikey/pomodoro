@@ -149,7 +149,10 @@ void Backend::start() {
 
 void Backend::skip() {
   switchMode();
-  start();
+
+  if (Config::the()->skipStart()) {
+    start();
+  }
 }
 
 QTimer* Backend::timer() {

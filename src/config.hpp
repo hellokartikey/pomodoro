@@ -30,11 +30,17 @@ class Config : public QObject {
       int breakMin READ breakMin WRITE setBreakMin NOTIFY breakMinChanged)
   Q_PROPERTY(int workMin READ workMin WRITE setWorkMin NOTIFY workMinChanged)
 
-  static constexpr auto WORK_MIN_CONF = "workMin";
-  static constexpr auto BREAK_MIN_CONF = "breakMin";
+  Q_PROPERTY(
+      bool skipStart READ skipStart WRITE setSkipStart NOTIFY skipStartChanged)
 
-  static constexpr auto BREAK_MIN_DEFAULT = 5;
+  static constexpr auto WORK_MIN_CONF = "workMin";
   static constexpr auto WORK_MIN_DEFAULT = 25;
+
+  static constexpr auto BREAK_MIN_CONF = "breakMin";
+  static constexpr auto BREAK_MIN_DEFAULT = 5;
+
+  static constexpr auto SKIP_START_CONF = "skipStart";
+  static constexpr auto SKIP_START_DEFAULT = true;
 
   explicit Config(QObject* parent = nullptr);
 
@@ -60,6 +66,10 @@ class Config : public QObject {
   int breakMin();
   void setBreakMin(int min);
   Q_SIGNAL void breakMinChanged();
+
+  bool skipStart();
+  void setSkipStart(bool value);
+  Q_SIGNAL void skipStartChanged();
 
  private:
   KColorSchemeManager* m_color;
