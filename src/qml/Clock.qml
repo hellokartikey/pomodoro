@@ -19,6 +19,7 @@ Kirigami.Page {
         text: "Reset"
         icon.name: "view-refresh-symbolic"
         onTriggered: Backend.reset()
+        shortcut: "R"
       }
 
       Kirigami.Action {
@@ -81,31 +82,52 @@ Kirigami.Page {
       spacing: Kirigami.Units.gridUnit
 
       Button {
+        id: startButton
+
         text: "Start"
         icon.name: "media-playback-start-symbolic"
         display: AbstractButton.IconOnly
-
         visible: Backend.isPaused
 
         onClicked: { Backend.start() }
+
+        Shortcut {
+          sequence: "Space"
+          enabled: startButton.visible
+          onActivated: startButton.click()
+        }
       }
 
       Button {
+        id: pauseButton
+
         text: "Pause"
         icon.name: "media-playback-pause-symbolic"
         display: AbstractButton.IconOnly
-
         visible: ! Backend.isPaused
 
         onClicked: { Backend.pause() }
+
+        Shortcut {
+          sequence: "Space"
+          enabled: pauseButton.visible
+          onActivated: pauseButton.click()
+        }
       }
 
       Button {
+        id: skipButton
+
         text: "Skip"
         icon.name: "media-skip-forward-symbolic"
         display: AbstractButton.IconOnly
 
         onClicked: { Backend.skip() }
+
+        Shortcut {
+          sequence: "S"
+          onActivated: skipButton.click()
+        }
       }
     }
   }
